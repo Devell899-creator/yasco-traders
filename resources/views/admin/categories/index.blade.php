@@ -1,16 +1,16 @@
 @extends('admin.layouts.app')
 
-@section('title', 'Products')
+@section('title', 'Categories')
 
 @section('content')
 
     {{-- Page Header --}}
     <div class="page-header">
 
-        <h1>Products</h1>
+        <h1>Categories</h1>
 
-        <a href="{{ route('admin.products.create') }}" class="add-btn">
-            Add Product
+        <a href="{{ route('admin.categories.create') }}" class="add-btn">
+            Add Category
         </a>
 
     </div>
@@ -18,15 +18,13 @@
 
     {{-- Success Message --}}
     @if(session('success'))
-
         <div class="success-message">
             {{ session('success') }}
         </div>
-
     @endif
 
 
-    {{-- Products Table --}}
+    {{-- Categories Table --}}
     <div class="table-card">
 
         <div class="table-wrapper">
@@ -34,77 +32,33 @@
             <table>
 
                 <thead>
-
                     <tr>
                         <th>ID</th>
-                        <th>Name</th>
-                        <th>SKU</th>
-                        <th>Category</th>
-                        <th>Price</th>
-                        <th>Stock</th>
                         <th>Image</th>
+                        <th>Name</th>
+                        <th>Description</th>
+                        <th>Status</th>
+                        <th>Sort Order</th>
                         <th>Actions</th>
                     </tr>
-
                 </thead>
-
 
                 <tbody>
 
-                    @forelse($products as $product)
+                    @forelse($categories as $category)
 
                         <tr>
 
                             <td>
-                                {{ $product->id }}
-                            </td>
-
-                            <td>
-                                <strong>{{ $product->name }}</strong>
-                            </td>
-
-                            <td>
-                                {{ $product->sku }}
-                            </td>
-
-                            <td>
-                                {{ $product->category->name ?? 'No Category' }}
-                            </td>
-
-                            <td>
-                                {{ $product->currency }}
-                                {{ $product->price }}
+                                {{ $category->id }}
                             </td>
 
                             <td>
 
-                                @if($product->stock > 0)
+                                @if($category->image)
 
-                                    <span class="stock-available">
-                                        {{ $product->stock }}
-                                    </span>
-
-                                @else
-
-                                    <span class="stock-out">
-                                        Out of Stock
-                                    </span>
-
-                                @endif
-
-                            </td>
-
-
-                            {{-- Image --}}
-                            <td>
-
-                                @if($product->image)
-
-                                    <div class="product-image">
-
-                                        <img src="{{ asset($product->image) }}"
-                                             alt="{{ $product->name }}">
-
+                                    <div class="category-image">
+                                        <img src="{{ asset($category->image) }}" alt="{{ $category->name }}">
                                     </div>
 
                                 @else
@@ -117,31 +71,57 @@
 
                             </td>
 
+                            <td>
+                                <strong>{{ $category->name }}</strong>
+                            </td>
 
-                            {{-- Actions --}}
+                            <td>
+                                {{ $category->description ?? 'N/A' }}
+                            </td>
+
                             <td>
 
+                                @if($category->status)
+
+                                    <span class="status-active">
+                                        Active
+                                    </span>
+
+                                @else
+
+                                    <span class="status-inactive">
+                                        Inactive
+                                    </span>
+
+                                @endif
+
+                            </td>
+
+                            <td>
+                                {{ $category->sort_order }}
+                            </td>
+
+                            <td>
                                 <div class="action-buttons">
 
-                                    <a href="{{ route('admin.products.show', $product->id) }}"
-                                       class="btn-view">
+                                    {{-- View --}}
+                                    <a href="{{ route('admin.categories.show', $category->id) }}" class="btn-view">
                                         View
                                     </a>
 
-                                    <a href="{{ route('admin.products.edit', $product->id) }}"
-                                       class="btn-edit">
+                                    {{-- Edit --}}
+                                    <a href="{{ route('admin.categories.edit', $category->id) }}" class="btn-edit">
                                         Edit
                                     </a>
 
-                                    <form action="{{ route('admin.products.destroy', $product->id) }}"
-                                          method="POST">
+                                    {{-- Delete --}}
+                                    <form action="{{ route('admin.categories.destroy', $category->id) }}" method="POST">
 
                                         @csrf
                                         @method('DELETE')
 
-                                        <button type="submit"
-                                                class="btn-delete"
-                                                onclick="return confirm('Are you sure you want to delete this product?')">
+                                        <button type="submit" class="btn-delete"
+                                            onclick="return confirm('Are you sure you want to delete this category?')">
                                             Delete
                                         </button>
 
@@ -157,8 +137,8 @@
 
                         <tr>
 
-                            <td colspan="8" class="empty-row">
-                                No products found.
+                            <td colspan="7" class="empty-row">
+                                No categories found.
                             </td>
 
                         </tr>
@@ -176,14 +156,11 @@
 
     {{-- Pagination --}}
     <div class="pagination">
-        {{ $products->links() }}
+        {{ $categories->links() }}
     </div>
 
 
     <style>
-
-        /* Page Header */
-
         .page-header {
             display: flex;
             justify-content: space-between;
@@ -195,9 +172,6 @@
             margin: 0;
         }
 
-
-        /* Add Button */
-
         .add-btn {
             background: #007bff;
             color: white;
@@ -206,15 +180,11 @@
             text-decoration: none;
             font-size: 14px;
             font-weight: 500;
-            transition: 0.2s ease;
         }
 
         .add-btn:hover {
             background: #0056b3;
         }
-
-
-        /* Success Message */
 
         .success-message {
             background: #d4edda;
@@ -224,9 +194,6 @@
             border-radius: 6px;
         }
 
-
-        /* Table Card */
-
         .table-card {
             background: white;
             border-radius: 8px;
@@ -234,16 +201,10 @@
             overflow: hidden;
         }
 
-
-        /* Table Wrapper */
-
         .table-wrapper {
             width: 100%;
             overflow-x: auto;
         }
-
-
-        /* Table */
 
         .table-wrapper table {
             width: 100%;
@@ -270,25 +231,20 @@
             background: #f8f9fa;
         }
 
-
-        /* Product Image */
-
-        .product-image {
-            width: 70px;
-            height: 70px;
-
+        .category-image {
+            width: 60px;
+            height: 60px;
             display: flex;
             justify-content: center;
             align-items: center;
-
             border: 1px solid #eee;
             border-radius: 6px;
-            background: #fff;
+            background: white;
         }
 
-        .product-image img {
-            max-width: 60px;
-            max-height: 60px;
+        .category-image img {
+            max-width: 50px;
+            max-height: 50px;
             object-fit: contain;
         }
 
@@ -297,10 +253,7 @@
             font-size: 13px;
         }
 
-
-        /* Stock */
-
-        .stock-available {
+        .status-active {
             background: #d4edda;
             color: #155724;
             padding: 5px 9px;
@@ -309,7 +262,7 @@
             font-weight: 600;
         }
 
-        .stock-out {
+        .status-inactive {
             background: #f8d7da;
             color: #721c24;
             padding: 5px 9px;
@@ -318,72 +271,9 @@
             font-weight: 600;
         }
 
-
-        /* Action Buttons */
-
-        .action-buttons {
-            display: flex;
-            gap: 7px;
-            align-items: center;
-        }
-
         .action-buttons form {
             margin: 0;
         }
-
-        .action-buttons a,
-        .action-buttons button {
-            border: none;
-            padding: 7px 11px;
-            border-radius: 5px;
-            font-size: 12px;
-            font-weight: 600;
-            text-decoration: none;
-            cursor: pointer;
-            transition: 0.2s ease;
-        }
-
-
-        /* View */
-
-        .btn-view {
-            background: #e8f3ff;
-            color: #1677d2;
-        }
-
-        .btn-view:hover {
-            background: #1677d2;
-            color: white;
-        }
-
-
-        /* Edit */
-
-        .btn-edit {
-            background: #fff4df;
-            color: #d98b00;
-        }
-
-        .btn-edit:hover {
-            background: #d98b00;
-            color: white;
-        }
-
-
-        /* Delete */
-
-        .btn-delete {
-            background: #ffe8e8;
-            color: #dc3545;
-        }
-
-        .btn-delete:hover {
-            background: #dc3545;
-            color: white;
-        }
-
-
-        /* Empty */
 
         .empty-row {
             text-align: center;
@@ -391,15 +281,9 @@
             color: #777;
         }
 
-
-        /* Pagination */
-
         .pagination {
             margin-top: 20px;
         }
-
-
-        /* Mobile */
 
         @media (max-width: 768px) {
 
@@ -409,16 +293,11 @@
                 gap: 15px;
             }
 
-            .table-card {
-                border-radius: 6px;
-            }
-
             .action-buttons {
                 flex-wrap: wrap;
             }
 
         }
-
     </style>
 
 @endsection

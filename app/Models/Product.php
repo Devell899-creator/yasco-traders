@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model
 {
-    protected $fillable = ['name', 'sku', 'category', 'brand', 'price', 'currency', 'stock', 'rating',
+    protected $fillable = ['name', 'sku', 'category_id', 'brand', 'price', 'currency', 'stock', 'rating',
     'reviews', 'is_featured', 'image', 'description'];
 
     protected $casts = [
@@ -14,4 +14,8 @@ class Product extends Model
         'rating' => 'decimal:1',
         'is_featured' => 'boolean',
     ];
+
+    public function category(){ 
+       return $this->belongsTo(Category::class); 
+    }
 }

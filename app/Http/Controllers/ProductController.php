@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
 
@@ -17,7 +18,9 @@ class ProductController extends Controller
 
     public function create()
     {
-        return view('admin.products.create');
+        $categories = Category::orderBy('name')->get();
+
+        return view('admin.products.create', compact('categories'));
     }
 
 
@@ -26,7 +29,7 @@ class ProductController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'sku' => 'required|string|max:255|unique:products,sku',
-            'category' => 'required|string|max:255',
+            'category_id' => 'required|exists:categories,id',
             'price' => 'required|numeric',
             'stock' => 'required|integer|min:0',
             'image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
@@ -64,7 +67,9 @@ class ProductController extends Controller
 
     public function edit(Product $product)
     {
-        return view('admin.products.edit', compact('product'));
+        $categories = Category::orderBy('name')->get();
+
+        return view('admin.products.edit', compact( 'product', 'categories' ));
     }
 
 
@@ -73,7 +78,7 @@ class ProductController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'sku' => 'required|string|max:255|unique:products,sku,' . $product->id,
-            'category' => 'required|string|max:255',
+            'category_id' => 'required|exists:categories,id',
             'price' => 'required|numeric',
             'stock' => 'required|integer|min:0',
             'image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',

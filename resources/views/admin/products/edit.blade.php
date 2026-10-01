@@ -31,9 +31,7 @@
 
     <div class="form-card">
 
-        <form action="{{ route('admin.products.update', $product->id) }}"
-              method="POST"
-              enctype="multipart/form-data">
+        <form action="{{ route('admin.products.update', $product->id) }}" method="POST" enctype="multipart/form-data">
 
             @csrf
             @method('PUT')
@@ -46,10 +44,8 @@
 
                     <label>Product Name</label>
 
-                    <input type="text"
-                           name="name"
-                           value="{{ old('name', $product->name) }}"
-                           placeholder="Enter product name">
+                    <input type="text" name="name" value="{{ old('name', $product->name) }}"
+                        placeholder="Enter product name">
 
                 </div>
 
@@ -59,10 +55,7 @@
 
                     <label>SKU</label>
 
-                    <input type="text"
-                           name="sku"
-                           value="{{ old('sku', $product->sku) }}"
-                           placeholder="Enter SKU">
+                    <input type="text" name="sku" value="{{ old('sku', $product->sku) }}" placeholder="Enter SKU">
 
                 </div>
 
@@ -70,25 +63,37 @@
                 {{-- Category --}}
                 <div class="form-group">
 
-                    <label>Category</label>
+                    <label for="category_id">Category</label>
 
-                    <input type="text"
-                           name="category"
-                           value="{{ old('category', $product->category) }}"
-                           placeholder="Enter category">
+                    <select name="category_id" id="category_id" required>
+
+                        <option value="">Select Category</option>
+
+                        @foreach($categories as $category)
+
+                            <option value="{{ $category->id }}" {{ old('category_id', $product->category_id) == $category->id ? 'selected' : '' }}>
+
+                                {{ $category->name }}
+
+                            </option>
+
+                        @endforeach
+
+                    </select>
+
+                    @error('category_id')
+                        <p class="error">{{ $message }}</p>
+                    @enderror
 
                 </div>
-
-
+            
+                
                 {{-- Brand --}}
                 <div class="form-group">
 
                     <label>Brand</label>
 
-                    <input type="text"
-                           name="brand"
-                           value="{{ old('brand', $product->brand) }}"
-                           placeholder="Enter brand">
+                    <input type="text" name="brand" value="{{ old('brand', $product->brand) }}" placeholder="Enter brand">
 
                 </div>
 
@@ -98,11 +103,8 @@
 
                     <label>Price</label>
 
-                    <input type="number"
-                           step="0.01"
-                           name="price"
-                           value="{{ old('price', $product->price) }}"
-                           placeholder="Enter price">
+                    <input type="number" step="0.01" name="price" value="{{ old('price', $product->price) }}"
+                        placeholder="Enter price">
 
                 </div>
 
@@ -112,10 +114,7 @@
 
                     <label>Currency</label>
 
-                    <input type="text"
-                           name="currency"
-                           value="{{ old('currency', $product->currency) }}"
-                           placeholder="SAR">
+                    <input type="text" name="currency" value="{{ old('currency', $product->currency) }}" placeholder="SAR">
 
                 </div>
 
@@ -125,10 +124,7 @@
 
                     <label>Stock</label>
 
-                    <input type="number"
-                           name="stock"
-                           value="{{ old('stock', $product->stock) }}"
-                           placeholder="Enter stock">
+                    <input type="number" name="stock" value="{{ old('stock', $product->stock) }}" placeholder="Enter stock">
 
                 </div>
 
@@ -138,13 +134,8 @@
 
                     <label>Rating</label>
 
-                    <input type="number"
-                           step="0.1"
-                           min="0"
-                           max="5"
-                           name="rating"
-                           value="{{ old('rating', $product->rating) }}"
-                           placeholder="0 - 5">
+                    <input type="number" step="0.1" min="0" max="5" name="rating"
+                        value="{{ old('rating', $product->rating) }}" placeholder="0 - 5">
 
                 </div>
 
@@ -154,11 +145,8 @@
 
                     <label>Reviews</label>
 
-                    <input type="number"
-                           min="0"
-                           name="reviews"
-                           value="{{ old('reviews', $product->reviews) }}"
-                           placeholder="Number of reviews">
+                    <input type="number" min="0" name="reviews" value="{{ old('reviews', $product->reviews) }}"
+                        placeholder="Number of reviews">
 
                 </div>
 
@@ -170,13 +158,11 @@
 
                     <select name="is_featured">
 
-                        <option value="0"
-                            {{ old('is_featured', $product->is_featured) == 0 ? 'selected' : '' }}>
+                        <option value="0" {{ old('is_featured', $product->is_featured) == 0 ? 'selected' : '' }}>
                             No
                         </option>
 
-                        <option value="1"
-                            {{ old('is_featured', $product->is_featured) == 1 ? 'selected' : '' }}>
+                        <option value="1" {{ old('is_featured', $product->is_featured) == 1 ? 'selected' : '' }}>
                             Yes
                         </option>
 
@@ -190,9 +176,8 @@
 
                     <label>Description</label>
 
-                    <textarea name="description"
-                              rows="5"
-                              placeholder="Enter product description">{{ old('description', $product->description) }}</textarea>
+                    <textarea name="description" rows="5"
+                        placeholder="Enter product description">{{ old('description', $product->description) }}</textarea>
 
                 </div>
 
@@ -206,8 +191,7 @@
 
                         @if($product->image)
 
-                            <img src="{{ asset($product->image) }}"
-                                 alt="{{ $product->name }}">
+                            <img src="{{ asset($product->image) }}" alt="{{ $product->name }}">
 
                         @else
 
@@ -225,9 +209,7 @@
 
                     <label>Change Image</label>
 
-                    <input type="file"
-                           name="image"
-                           accept="image/*">
+                    <input type="file" name="image" accept="image/*">
 
                     <small>
                         Select a new image if you want to replace the current image.
@@ -245,8 +227,7 @@
                     Update Product
                 </button>
 
-                <a href="{{ route('admin.products.index') }}"
-                   class="cancel-btn">
+                <a href="{{ route('admin.products.index') }}" class="cancel-btn">
                     Cancel
                 </a>
 
@@ -259,7 +240,6 @@
 
 
     <style>
-
         .page-header {
             display: flex;
             justify-content: space-between;
@@ -447,7 +427,6 @@
             }
 
         }
-
     </style>
 
 @endsection

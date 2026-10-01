@@ -4,28 +4,40 @@
 
 @section('content')
 
-    <h1>Dashboard</h1>
+    <h1 style="color: black; margin-bottom: 25px;">
+        Dashboard
+    </h1>
 
+    {{-- Dashboard Cards --}}
     <div class="cards">
 
         <div class="card">
             <h3>Products</h3>
-            <p>0</p>
+            <p>{{ $products }}</p>
         </div>
 
         <div class="card">
             <h3>Categories</h3>
-            <p>0</p>
+            <p>{{ $categories }}</p>
         </div>
 
         <div class="card">
             <h3>Orders</h3>
-            <p>0</p>
+            <p>{{ $orders }}</p>
         </div>
 
         <div class="card">
             <h3>Customers</h3>
-            <p>0</p>
+            <p>{{ $customers }}</p>
+        </div>
+
+        <td style="padding: 12px;">
+            {{ $order->address ?? '-' }}
+        </td>
+
+        <div class="card">
+            <h3>Messages</h3>
+            <p>{{ $messages }}</p>
         </div>
 
     </div>

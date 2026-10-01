@@ -41,7 +41,7 @@
 
             <div class="info-row">
                 <strong>Category:</strong>
-                <span>{{ $product->category }}</span>
+                <span>{{ $product->category->name ?? 'No Category' }}</span>
             </div>
 
             <div class="info-row">

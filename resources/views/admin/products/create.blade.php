@@ -29,9 +29,7 @@
     {{-- Product Form --}}
     <div class="form-card">
 
-        <form action="{{ route('admin.products.store') }}"
-              method="POST"
-              enctype="multipart/form-data">
+        <form action="{{ route('admin.products.store') }}" method="POST" enctype="multipart/form-data">
 
             @csrf
 
@@ -41,10 +39,7 @@
                 <div class="form-group">
                     <label>Product Name</label>
 
-                    <input type="text"
-                           name="name"
-                           value="{{ old('name') }}"
-                           placeholder="Enter product name">
+                    <input type="text" name="name" value="{{ old('name') }}" placeholder="Enter product name">
                 </div>
 
 
@@ -52,32 +47,42 @@
                 <div class="form-group">
                     <label>SKU</label>
 
-                    <input type="text"
-                           name="sku"
-                           value="{{ old('sku') }}"
-                           placeholder="Enter SKU">
+                    <input type="text" name="sku" value="{{ old('sku') }}" placeholder="Enter SKU">
                 </div>
 
 
                 {{-- Category --}}
                 <div class="form-group">
-                    <label>Category</label>
 
-                    <input type="text"
-                           name="category"
-                           value="{{ old('category') }}"
-                           placeholder="Enter category">
+                    <label for="category_id">Category</label>
+
+                    <select name="category_id" id="category_id" required>
+
+                        <option value="">Select Category</option>
+
+                        @foreach($categories as $category)
+
+                            <option value="{{ $category->id }}" {{ old('category_id') == $category->id ? 'selected' : '' }}>
+
+                                {{ $category->name }}
+
+                            </option>
+
+                        @endforeach
+
+                    </select>
+
+                    @error('category_id')
+                        <p class="error">{{ $message }}</p>
+                    @enderror
+
                 </div>
-
 
                 {{-- Brand --}}
                 <div class="form-group">
                     <label>Brand</label>
 
-                    <input type="text"
-                           name="brand"
-                           value="{{ old('brand') }}"
-                           placeholder="Enter brand">
+                    <input type="text" name="brand" value="{{ old('brand') }}" placeholder="Enter brand">
                 </div>
 
 
@@ -85,11 +90,7 @@
                 <div class="form-group">
                     <label>Price</label>
 
-                    <input type="number"
-                           step="0.01"
-                           name="price"
-                           value="{{ old('price') }}"
-                           placeholder="Enter price">
+                    <input type="number" step="0.01" name="price" value="{{ old('price') }}" placeholder="Enter price">
                 </div>
 
 
@@ -97,10 +98,7 @@
                 <div class="form-group">
                     <label>Currency</label>
 
-                    <input type="text"
-                           name="currency"
-                           value="{{ old('currency', 'SAR') }}"
-                           placeholder="SAR">
+                    <input type="text" name="currency" value="{{ old('currency', 'SAR') }}" placeholder="SAR">
                 </div>
 
 
@@ -108,10 +106,7 @@
                 <div class="form-group">
                     <label>Stock</label>
 
-                    <input type="number"
-                           name="stock"
-                           value="{{ old('stock') }}"
-                           placeholder="Enter stock quantity">
+                    <input type="number" name="stock" value="{{ old('stock') }}" placeholder="Enter stock quantity">
                 </div>
 
 
@@ -119,13 +114,8 @@
                 <div class="form-group">
                     <label>Rating</label>
 
-                    <input type="number"
-                           step="0.1"
-                           min="0"
-                           max="5"
-                           name="rating"
-                           value="{{ old('rating') }}"
-                           placeholder="0 - 5">
+                    <input type="number" step="0.1" min="0" max="5" name="rating" value="{{ old('rating') }}"
+                        placeholder="0 - 5">
                 </div>
 
 
@@ -133,11 +123,8 @@
                 <div class="form-group">
                     <label>Reviews</label>
 
-                    <input type="number"
-                           min="0"
-                           name="reviews"
-                           value="{{ old('reviews', 0) }}"
-                           placeholder="Number of reviews">
+                    <input type="number" min="0" name="reviews" value="{{ old('reviews', 0) }}"
+                        placeholder="Number of reviews">
                 </div>
 
 
@@ -147,13 +134,11 @@
 
                     <select name="is_featured">
 
-                        <option value="0"
-                            {{ old('is_featured', 0) == 0 ? 'selected' : '' }}>
+                        <option value="0" {{ old('is_featured', 0) == 0 ? 'selected' : '' }}>
                             No
                         </option>
 
-                        <option value="1"
-                            {{ old('is_featured') == 1 ? 'selected' : '' }}>
+                        <option value="1" {{ old('is_featured') == 1 ? 'selected' : '' }}>
                             Yes
                         </option>
 
@@ -166,9 +151,7 @@
 
                     <label>Product Image</label>
 
-                    <input type="file"
-                           name="image"
-                           accept="image/*">
+                    <input type="file" name="image" accept="image/*">
 
                     <small>
                         Upload JPG, JPEG, PNG or WEBP image.
@@ -182,9 +165,8 @@
 
                     <label>Description</label>
 
-                    <textarea name="description"
-                              rows="5"
-                              placeholder="Enter product description">{{ old('description') }}</textarea>
+                    <textarea name="description" rows="5"
+                        placeholder="Enter product description">{{ old('description') }}</textarea>
 
                 </div>
 
@@ -198,8 +180,7 @@
                     Save Product
                 </button>
 
-                <a href="{{ route('admin.products.index') }}"
-                   class="cancel-btn">
+                <a href="{{ route('admin.products.index') }}" class="cancel-btn">
                     Cancel
                 </a>
 
@@ -212,7 +193,6 @@
 
     {{-- Page CSS --}}
     <style>
-
         .page-header {
             display: flex;
             justify-content: space-between;
@@ -359,7 +339,6 @@
             }
 
         }
-
     </style>
 
 @endsection

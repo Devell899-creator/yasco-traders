@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
     <title>@yield('title', 'Admin Panel')</title>
-
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
     <style>
         * {
             margin: 0;
@@ -200,19 +200,19 @@
                 Products
             </a>
 
-            <a href="#">
+            <a href="{{ route('admin.categories.index') }}">
                 Categories
             </a>
 
-            <a href="#">
+            <a href="{{ route('admin.orders.index') }}">
                 Orders
             </a>
 
-            <a href="#">
+            <a href="{{ route('admin.customers.index') }}">
                 Customers
             </a>
 
-            <a href="#">
+            <a href="{{ route('admin.messages.index') }}">
                 Messages
             </a>
 
