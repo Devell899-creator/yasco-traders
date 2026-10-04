@@ -216,6 +216,10 @@
                 Messages
             </a>
 
+            <a href="{{ route('admin.website-content.index') }}">
+                Website-Content
+            </a>
+
         </div>
 
         <div class="content">
