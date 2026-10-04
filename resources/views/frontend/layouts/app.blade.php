@@ -86,6 +86,19 @@
             color: white;
         }
 
+        .register-btn {
+            text-decoration: none;
+            padding: 10px 18px;
+            border-radius: 6px;
+            font-size: 14px;
+            background-color: #222;
+            color: white;
+        }
+
+        .register-btn:hover {
+            background-color: #444;
+        }
+
         .login-btn:hover {
             background-color: #f5f5f5;
         }
@@ -405,10 +418,13 @@
                 Login
             </a>
 
-            <a href="{{ route('frontend.cart') }}" class="cart-btn">
-                Cart
+            <a href="{{ route('frontend.register') }}" class="register-btn">
+                Register
             </a>
 
+            <a href="{{ route('frontend.cart') }}" class="cart-btn">
+                Cart ({{ collect(session('cart', []))->sum('quantity') }})
+            </a>
         </div>
 
     </header>

@@ -79,23 +79,27 @@ class FrontendController extends Controller
         return redirect()->route('frontend.contact')->with('success', 'Your message has been sent successfully.');
     }
 
-    public function loginSubmit(Request $request){
-       $credentials = $request->validate([
-          'email' => 'required|email',
-          'password' => 'required',
+    public function loginSubmit(Request $request)
+    {
+        $credentials = $request->validate([
+           'email' => 'required|email',
+           'password' => 'required',
         ]);
 
-       if (Auth::attempt($credentials)) {
-          $request->session()->regenerate();
+        if (Auth::attempt($credentials)) {
+           $request->session()->regenerate();
 
-          return redirect('/admin');
+           if (Auth::user()->role === 'admin') {
+              return redirect('/admin');
+            }
+
+           return redirect()->route('frontend.home');
         }
 
-       return back()->withErrors([
-          'email' => 'The email or password is incorrect.',
+        return back()->withErrors([
+           'email' => 'The email or password is incorrect.',
         ])->onlyInput('email');
     }
-
     public function addToCart(Request $request){
         $product = Product::findOrFail($request->product_id);
 
@@ -175,6 +179,7 @@ public function placeOrder(Request $request)
         'name' => 'required|string|max:255',
         'email' => 'required|email|max:255',
         'phone' => 'required|string|max:30',
+        'password' => Auth::check() ? 'nullable' : 'required|string|min:8|confirmed',
         'address' => 'required|string',
         'city' => 'required|string|max:255',
         'payment_method' => 'required|in:cod',
@@ -216,11 +221,31 @@ public function placeOrder(Request $request)
         return $order;
     });
 
+    /*
+    |--------------------------------------------------------------------------
+    | Guest customer account create
+    |--------------------------------------------------------------------------
+    */
+
+    if (!Auth::check()) {
+
+        $user = \App\Models\User::create([
+            'name' => $validated['name'],
+            'email' => $validated['email'],
+            'phone' => $validated['phone'],
+            'password' => $validated['password'],
+            'role' => 'customer',
+        ]);
+
+        Auth::login($user);
+
+        $request->session()->regenerate();
+    }
+
     session()->forget('cart');
 
     return redirect()->route('frontend.order.success', $order->id);
 }
-
     public function orderSuccess(Order $order){
        $order->load('items');
 

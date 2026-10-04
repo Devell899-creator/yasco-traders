@@ -9,6 +9,7 @@ use App\Http\Controllers\MessageController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FrontendController;
 use App\Http\Controllers\WebsiteContentController;
+use App\Http\Controllers\RegisterController;
 
 Route::get('/', [FrontendController::class, 'home'])->name('frontend.home');
 Route::get('/about', [FrontendController::class, 'about'])->name('frontend.about');
@@ -26,12 +27,29 @@ Route::post('/cart/remove', [FrontendController::class, 'removeFromCart'])->name
 Route::get('/checkout', [FrontendController::class, 'checkout'])->name('frontend.checkout');
 Route::post('/checkout', [FrontendController::class, 'placeOrder'])->name('frontend.checkout.place');
 Route::get('/order-success/{order}', [FrontendController::class, 'orderSuccess'])->name('frontend.order.success');
+Route::get('/register', [RegisterController::class, 'showRegister'])->name('frontend.register');
+Route::post('/register', [RegisterController::class, 'register'])->name('frontend.register.submit');
 
+Route::middleware('admin')->group(function () {
 
-Route::get('/admin', [DashboardController::class, 'index'])->name('admin.dashboard');
-Route::resource('/admin/products', ProductController::class)->names('admin.products');
-Route::resource('/admin/categories', CategoryController::class)->names('admin.categories');
-Route::resource('/admin/orders', OrderController::class)->names('admin.orders');
-Route::resource('/admin/customers', CustomerController::class)->names('admin.customers');
-Route::resource('/admin/messages', MessageController::class)->names('admin.messages');
-Route::resource('/admin/website-content', WebsiteContentController::class)->names('admin.website-content');
+    Route::get('/admin', [DashboardController::class, 'index'])
+        ->name('admin.dashboard');
+
+    Route::resource('/admin/products', ProductController::class)
+        ->names('admin.products');
+
+    Route::resource('/admin/categories', CategoryController::class)
+        ->names('admin.categories');
+
+    Route::resource('/admin/orders', OrderController::class)
+        ->names('admin.orders');
+
+    Route::resource('/admin/customers', CustomerController::class)
+        ->names('admin.customers');
+
+    Route::resource('/admin/messages', MessageController::class)
+        ->names('admin.messages');
+
+    Route::resource('/admin/website-content', WebsiteContentController::class)
+        ->names('admin.website-content');
+});
