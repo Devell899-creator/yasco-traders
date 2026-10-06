@@ -10,6 +10,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FrontendController;
 use App\Http\Controllers\WebsiteContentController;
 use App\Http\Controllers\RegisterController;
+use App\Http\Controllers\AdminLoginController;
 
 Route::get('/', [FrontendController::class, 'home'])->name('frontend.home');
 Route::get('/about', [FrontendController::class, 'about'])->name('frontend.about');
@@ -53,3 +54,6 @@ Route::middleware('admin')->group(function () {
     Route::resource('/admin/website-content', WebsiteContentController::class)
         ->names('admin.website-content');
 });
+Route::get('/admin/login', [AdminLoginController::class, 'showLogin'])->name('admin.login');
+Route::post('/admin/login', [AdminLoginController::class, 'login'])->name('admin.login.submit');
+Route::post('/admin/logout', [AdminLoginController::class, 'logout'])->name('admin.logout');

@@ -87,13 +87,20 @@ class FrontendController extends Controller
         ]);
 
         if (Auth::attempt($credentials)) {
+
            $request->session()->regenerate();
 
-           if (Auth::user()->role === 'admin') {
-              return redirect('/admin');
+        
+           if (Auth::user()->role !== 'customer') {
+
+               Auth::logout();
+
+               return back()->withErrors([
+                  'email' => 'Please use the admin login page.',
+                ])->onlyInput('email');
             }
 
-           return redirect()->route('frontend.home');
+            return redirect()->route('frontend.home');
         }
 
         return back()->withErrors([

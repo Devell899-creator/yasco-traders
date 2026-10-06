@@ -5,17 +5,29 @@
 @section('content')
 
     <div style="
-        max-width: 450px;
-        margin: 60px auto;
-        padding: 30px;0
-        background: white;
-        box-shadow: 0 2px 10px rgba(0,0,0,.1);
-        border-radius: 10px;
-    ">
+            max-width: 450px;
+            margin: 60px auto;
+            padding: 30px;
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,.1);
+            border-radius: 10px;
+        ">
 
         <h2 style="color:#222; text-align:center; margin-bottom:25px;">
             Login
         </h2>
+
+        @if($errors->any())
+            <div style="
+                background:#ffe5e5;
+                color:#c1121f;
+                padding:10px;
+                margin-bottom:15px;
+                border-radius:5px;
+            ">
+                {{ $errors->first() }}
+            </div>
+        @endif
 
         <form method="POST" action="{{ route('frontend.login.submit') }}">
             @csrf
@@ -27,14 +39,14 @@
                 style="width:100%; padding:12px; margin-bottom:15px;">
 
             <button type="submit" style="
-                    width:100%;
-                    padding:12px;
-                    background:#e63946;
-                    color:white;
-                    border:none;
-                    border-radius:5px;
-                    cursor:pointer;
-                ">
+                        width:100%;
+                        padding:12px;
+                        background:#e63946;
+                        color:white;
+                        border:none;
+                        border-radius:5px;
+                        cursor:pointer;
+                    ">
                 Login
             </button>
 

@@ -4,435 +4,623 @@
 
 @section('content')
 
-    <div style="
-        max-width:700px;
-        margin:60px auto;
-        padding:20px;
-    ">
+    <style>
+        .checkout-container {
+            max-width: 1100px;
+            margin: 50px auto;
+            padding: 0 20px;
+        }
 
-        {{-- Page Heading --}}
-        <h1 style="
-            color:#222;
-            margin-bottom:30px;
-        ">
+        .checkout-title {
+            text-align: center;
+            color: #222;
+            margin-bottom: 35px;
+        }
+
+        .checkout-grid {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr;
+            gap: 25px;
+            align-items: start;
+        }
+
+        .checkout-box {
+            background: #fff;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, .08);
+            margin-bottom: 25px;
+        }
+
+        .checkout-box h2 {
+            margin-top: 0;
+            margin-bottom: 22px;
+            color: #222;
+            font-size: 21px;
+        }
+
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-number {
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #e63946;
+            color: #fff;
+            border-radius: 50%;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 7px;
+            color: #333;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            box-sizing: border-box;
+            font-size: 14px;
+            outline: none;
+        }
+
+        .form-control:focus {
+            border-color: #e63946;
+        }
+
+        textarea.form-control {
+            resize: vertical;
+        }
+
+        .login-notice {
+            background: #f8f8f8;
+            border-left: 4px solid #e63946;
+            padding: 15px;
+            margin-bottom: 22px;
+            border-radius: 5px;
+        }
+
+        .login-notice strong {
+            color: #222;
+        }
+
+        .login-notice a {
+            color: #e63946;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .login-notice p {
+            margin: 7px 0 0;
+            color: #666;
+            font-size: 13px;
+        }
+
+        .account-box {
+            background: #fafafa;
+            border: 1px solid #eee;
+            padding: 18px;
+            border-radius: 7px;
+            margin-bottom: 22px;
+        }
+
+        .account-box h3 {
+            margin: 0 0 8px;
+            color: #222;
+            font-size: 17px;
+        }
+
+        .account-box p {
+            color: #666;
+            font-size: 13px;
+            margin: 0 0 18px;
+        }
+
+        /* ORDER SUMMARY */
+
+        .order-summary {
+            position: sticky;
+            top: 20px;
+        }
+
+        .product-item {
+            display: flex;
+            gap: 12px;
+            padding: 15px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .product-info {
+            flex: 1;
+        }
+
+        .product-name {
+            font-weight: bold;
+            color: #222;
+            margin-bottom: 6px;
+        }
+
+        .product-meta {
+            color: #777;
+            font-size: 13px;
+        }
+
+        .product-price {
+            font-weight: bold;
+            color: #222;
+            white-space: nowrap;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            color: #555;
+            font-size: 14px;
+        }
+
+        .summary-total {
+            display: flex;
+            justify-content: space-between;
+            border-top: 1px solid #ddd;
+            margin-top: 10px;
+            padding-top: 18px;
+            font-size: 20px;
+            font-weight: bold;
+            color: #222;
+        }
+
+        .summary-total span:last-child {
+            color: #e63946;
+        }
+
+        .payment-box {
+            border: 1px solid #ddd;
+            padding: 15px;
+            border-radius: 7px;
+            background: #fafafa;
+        }
+
+        .payment-box label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            color: #222;
+            font-weight: 600;
+        }
+
+        .payment-box input {
+            accent-color: #e63946;
+        }
+
+        .place-order-btn {
+            width: 100%;
+            padding: 15px;
+            background: #e63946;
+            color: white;
+            border: none;
+            border-radius: 7px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        .place-order-btn:hover {
+            background: #c92f3b;
+        }
+
+        .error-box {
+            background: #ffe8e8;
+            color: #c1121f;
+            padding: 14px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            border: 1px solid #f5b5b5;
+        }
+
+        .error-box ul {
+            margin: 0;
+            padding-left: 20px;
+        }
+
+        @media (max-width: 768px) {
+
+            .checkout-container {
+                margin: 30px auto;
+                padding: 0 12px;
+            }
+
+            .checkout-title {
+                font-size: 28px;
+                margin-bottom: 25px;
+            }
+
+            .checkout-grid {
+                grid-template-columns: 1fr;
+                gap: 0;
+            }
+
+            .order-summary {
+                position: static;
+            }
+
+            .checkout-box {
+                padding: 18px;
+            }
+
+            .checkout-box h2 {
+                font-size: 19px;
+            }
+
+            .summary-total {
+                font-size: 18px;
+            }
+        }
+    </style>
+
+
+    <div class="checkout-container">
+
+        <h1 class="checkout-title">
             Checkout
         </h1>
 
 
-        {{-- =========================
-             ORDER SUMMARY
-        ========================== --}}
+        {{-- VALIDATION ERRORS --}}
+        @if($errors->any())
 
-        <div style="
-            background:#fff;
-            padding:25px;
-            margin-bottom:25px;
-            border-radius:10px;
-            box-shadow:0 2px 10px rgba(0,0,0,.1);
-        ">
+            <div class="error-box">
 
-            <h2 style="
-                margin-top:0;
-                margin-bottom:20px;
-                color:#222;
-            ">
-                Order Summary
-            </h2>
+                <strong>Please fix the following:</strong>
 
-
-            @foreach($cart as $item)
-
-                <div style="
-                    display:flex;
-                    justify-content:space-between;
-                    align-items:center;
-                    padding:12px 0;
-                    border-bottom:1px solid #eee;
-                ">
-
-                    {{-- Product Information --}}
-                    <div>
-
-                        <strong>
-                            {{ $item['name'] }}
-                        </strong>
-
-                        <div style="
-                            color:#666;
-                            font-size:14px;
-                            margin-top:5px;
-                        ">
-                            Rs. {{ number_format($item['price'], 2) }}
-                            ×
-                            {{ $item['quantity'] }}
-                        </div>
-
-                    </div>
-
-
-                    {{-- Product Subtotal --}}
-                    <strong>
-                        Rs.
-                        {{ number_format($item['price'] * $item['quantity'], 2) }}
-                    </strong>
-
-                </div>
-
-            @endforeach
-
-
-            {{-- Total --}}
-            <div style="
-                display:flex;
-                justify-content:space-between;
-                padding-top:20px;
-                font-size:18px;
-            ">
-
-                <strong>
-                    Total
-                </strong>
-
-                <strong style="color:#e63946;">
-                    Rs. {{ number_format($total, 2) }}
-                </strong>
+                <ul>
+                    @foreach($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
 
             </div>
 
-        </div>
+        @endif
 
 
-
-        {{-- =========================
-             CUSTOMER INFORMATION
-        ========================== --}}
-
-        <div style="
-            background:#fff;
-            padding:30px;
-            border-radius:10px;
-            box-shadow:0 2px 10px rgba(0,0,0,.1);
-        ">
-
-            <h2 style="
-                margin-top:0;
-                margin-bottom:25px;
-                color:#222;
-            ">
-                Customer Information
-            </h2>
+        <div class="checkout-grid">
 
 
-            {{-- Guest Login Option --}}
-            @if(!auth()->check())
+            {{-- ========================= --}}
+            {{-- LEFT SIDE --}}
+            {{-- ========================= --}}
 
-                <div style="
-                    margin-bottom:25px;
-                    padding:15px;
-                    background:#f5f5f5;
-                    border-radius:6px;
-                    color:#222;
-                ">
-
-                    <strong>
-                        Already have an account?
-                    </strong>
-
-                    <a
-                        href="{{ route('frontend.login') }}"
-                        style="
-                            color:#e63946;
-                            text-decoration:none;
-                            font-weight:bold;
-                            margin-left:5px;
-                        "
-                    >
-                        Login
-                    </a>
-
-                    <p style="
-                        margin:8px 0 0;
-                        color:#666;
-                        font-size:14px;
-                    ">
-                        Don't have an account?
-                        Enter your details below and your account
-                        will be created automatically.
-                    </p>
-
-                </div>
-
-            @endif
+            <div>
 
 
-            {{-- Checkout Form --}}
-            <form
-                method="POST"
-                action="{{ route('frontend.checkout.place') }}"
-            >
+                {{-- CUSTOMER INFORMATION --}}
 
-                @csrf
+                <div class="checkout-box">
 
-
-                {{-- Name --}}
-                <div style="margin-bottom:18px;">
-
-                    <label>
-                        <strong>Name</strong>
-                    </label>
-
-                    <input
-                        type="text"
-                        name="name"
-                        value="{{ old('name', auth()->user()->name ?? '') }}"
-                        required
-                        style="
-                            width:100%;
-                            padding:12px;
-                            margin-top:6px;
-                            border:1px solid #ddd;
-                            border-radius:5px;
-                            box-sizing:border-box;
-                        "
-                    >
-
-                </div>
+                    <h2 class="section-title">
+                        <span class="section-number">1</span>
+                        Customer Information
+                    </h2>
 
 
-                {{-- Email --}}
-                <div style="margin-bottom:18px;">
+                    {{-- GUEST LOGIN NOTICE --}}
 
-                    <label>
-                        <strong>Email</strong>
-                    </label>
+                    @if(!auth()->check())
 
-                    <input
-                        type="email"
-                        name="email"
-                        value="{{ old('email', auth()->user()->email ?? '') }}"
-                        required
-                        style="
-                            width:100%;
-                            padding:12px;
-                            margin-top:6px;
-                            border:1px solid #ddd;
-                            border-radius:5px;
-                            box-sizing:border-box;
-                        "
-                    >
+                        <div class="login-notice">
 
-                </div>
+                            <strong>
+                                Already have an account?
+                            </strong>
 
+                            <a href="{{ route('frontend.login') }}">
+                                Login
+                            </a>
 
-                {{-- Phone --}}
-                <div style="margin-bottom:18px;">
+                            <p>
+                                Don't have an account?
+                                You can create one while placing your order.
+                            </p>
 
-                    <label>
-                        <strong>Phone</strong>
-                    </label>
+                        </div>
 
-                    <input
-                        type="text"
-                        name="phone"
-                        value="{{ old('phone', auth()->user()->phone ?? '') }}"
-                        required
-                        style="
-                            width:100%;
-                            padding:12px;
-                            margin-top:6px;
-                            border:1px solid #ddd;
-                            border-radius:5px;
-                            box-sizing:border-box;
-                        "
-                    >
-
-                </div>
+                    @endif
 
 
-                {{-- Create Account --}}
-                @if(!auth()->check())
+                    <form method="POST" action="{{ route('frontend.checkout.place') }}">
 
-                    <div style="
-                        padding:18px;
-                        margin-bottom:20px;
-                        background:#fafafa;
-                        border:1px solid #eee;
-                        border-radius:6px;
-                    ">
-
-                        <h3 style="
-                            color:#222;
-                            margin-top:0;
-                            margin-bottom:15px;
-                        ">
-                            Create Your Account
-                        </h3>
+                        @csrf
 
 
-                        <p style="
-                            color:#666;
-                            font-size:14px;
-                            margin-bottom:15px;
-                        ">
-                            Your account will be created automatically
-                            when you place the order.
-                        </p>
+                        {{-- NAME --}}
 
-
-                        {{-- Password --}}
-                        <div style="margin-bottom:18px;">
+                        <div class="form-group">
 
                             <label>
-                                <strong>Password</strong>
+                                Full Name
                             </label>
 
-                            <input
-                                type="password"
-                                name="password"
-                                required
-                                style="
-                                    width:100%;
-                                    padding:12px;
-                                    margin-top:6px;
-                                    border:1px solid #ddd;
-                                    border-radius:5px;
-                                    box-sizing:border-box;
-                                "
-                            >
+                            <input type="text" name="name" class="form-control" placeholder="Enter your full name"
+                                value="{{ old('name', auth()->user()->name ?? '') }}" required>
 
                         </div>
 
 
-                        {{-- Confirm Password --}}
-                        <div>
+                        {{-- EMAIL --}}
+
+                        <div class="form-group">
 
                             <label>
-                                <strong>Confirm Password</strong>
+                                Email Address
                             </label>
 
-                            <input
-                                type="password"
-                                name="password_confirmation"
-                                required
-                                style="
-                                    width:100%;
-                                    padding:12px;
-                                    margin-top:6px;
-                                    border:1px solid #ddd;
-                                    border-radius:5px;
-                                    box-sizing:border-box;
-                                "
-                            >
+                            <input type="email" name="email" class="form-control" placeholder="Enter your email"
+                                value="{{ old('email', auth()->user()->email ?? '') }}" required>
 
                         </div>
+
+
+                        {{-- PHONE --}}
+
+                        <div class="form-group">
+
+                            <label>
+                                Phone Number
+                            </label>
+
+                            <input type="text" name="phone" class="form-control" placeholder="Enter your phone number"
+                                value="{{ old('phone', auth()->user()->phone ?? '') }}" required>
+
+                        </div>
+
+
+                        {{-- ========================= --}}
+                        {{-- CREATE ACCOUNT --}}
+                        {{-- ========================= --}}
+
+                        @if(!auth()->check())
+
+                            <div class="account-box">
+
+                                <h3>
+                                    Create Your Account
+                                </h3>
+
+                                <p>
+                                    Your customer account will be created automatically
+                                    after placing the order.
+                                </p>
+
+
+                                {{-- PASSWORD --}}
+
+                                <div class="form-group">
+
+                                    <label>
+                                        Password
+                                    </label>
+
+                                    <input type="password" name="password" class="form-control"
+                                        placeholder="Minimum 8 characters" required>
+
+                                </div>
+
+
+                                {{-- CONFIRM PASSWORD --}}
+
+                                <div class="form-group">
+
+                                    <label>
+                                        Confirm Password
+                                    </label>
+
+                                    <input type="password" name="password_confirmation" class="form-control"
+                                        placeholder="Confirm your password" required>
+
+                                </div>
+
+                            </div>
+
+                        @endif
+
+
+                        {{-- ========================= --}}
+                        {{-- DELIVERY INFORMATION --}}
+                        {{-- ========================= --}}
+
+                        <h2 class="section-title">
+
+                            <span class="section-number">2</span>
+
+                            Delivery Information
+
+                        </h2>
+
+
+                        {{-- ADDRESS --}}
+
+                        <div class="form-group">
+
+                            <label>
+                                Complete Address
+                            </label>
+
+                            <textarea name="address" class="form-control" rows="4"
+                                placeholder="House number, street, area..." required>{{ old('address') }}</textarea>
+
+                        </div>
+
+
+                        {{-- CITY --}}
+
+                        <div class="form-group">
+
+                            <label>
+                                City
+                            </label>
+
+                            <input type="text" name="city" class="form-control" placeholder="Enter your city"
+                                value="{{ old('city') }}" required>
+
+                        </div>
+
+
+                        {{-- ========================= --}}
+                        {{-- PAYMENT --}}
+                        {{-- ========================= --}}
+
+                        <h2 class="section-title">
+
+                            <span class="section-number">3</span>
+
+                            Payment Method
+
+                        </h2>
+
+
+                        <div class="payment-box">
+
+                            <label>
+
+                                <input type="radio" name="payment_method" value="cod" required>
+
+                                Cash on Delivery
+
+                            </label>
+
+                        </div>
+
+
+                        <button type="submit" class="place-order-btn">
+                            Place Order
+                        </button>
+
+
+                    </form>
+
+                </div>
+
+            </div>
+
+
+            {{-- ========================= --}}
+            {{-- RIGHT SIDE --}}
+            {{-- ========================= --}}
+
+            <div>
+
+
+                <div class="checkout-box order-summary">
+
+                    <h2 class="section-title">
+
+                        <span class="section-number">
+                            4
+                        </span>
+
+                        Your Order
+
+                    </h2>
+
+
+                    {{-- PRODUCTS --}}
+
+                    {{-- PRODUCTS --}}
+
+                    @foreach($cart as $item)
+
+                        <div class="product-item">
+
+                            <div class="product-info">
+
+                                <div class="product-name">
+                                    {{ $item['name'] }}
+                                </div>
+
+                                <div class="product-meta">
+                                    Rs. {{ number_format($item['price'], 2) }}
+                                    ×
+                                    {{ $item['quantity'] }}
+                                </div>
+
+                            </div>
+
+                            <div class="product-price">
+                                Rs. {{ number_format($item['price'] * $item['quantity'], 2) }}
+                            </div>
+
+                        </div>
+
+                    @endforeach
+
+                    {{-- SUBTOTAL --}}
+
+                    <div class="summary-row">
+
+                        <span>
+                            Subtotal
+                        </span>
+
+                        <strong>
+                            Rs. {{ number_format($total, 2) }}
+                        </strong>
 
                     </div>
 
-                @endif
+
+                    {{-- DELIVERY --}}
+
+                    <div class="summary-row">
+
+                        <span>
+                            Delivery
+                        </span>
+
+                        <strong>
+                            Free
+                        </strong>
+
+                    </div>
 
 
-                {{-- Address --}}
-                <div style="margin-bottom:18px;">
+                    {{-- TOTAL --}}
 
-                    <label>
-                        <strong>Address</strong>
-                    </label>
+                    <div class="summary-total">
 
-                    <textarea
-                        name="address"
-                        rows="4"
-                        required
-                        style="
-                            width:100%;
-                            padding:12px;
-                            margin-top:6px;
-                            border:1px solid #ddd;
-                            border-radius:5px;
-                            box-sizing:border-box;
-                            resize:vertical;
-                        "
-                    >{{ old('address') }}</textarea>
+                        <span>
+                            Total
+                        </span>
+
+                        <span>
+                            Rs. {{ number_format($total, 2) }}
+                        </span>
+
+                    </div>
+
 
                 </div>
 
+            </div>
 
-                {{-- City --}}
-                <div style="margin-bottom:18px;">
-
-                    <label>
-                        <strong>City</strong>
-                    </label>
-
-                    <input
-                        type="text"
-                        name="city"
-                        value="{{ old('city') }}"
-                        required
-                        style="
-                            width:100%;
-                            padding:12px;
-                            margin-top:6px;
-                            border:1px solid #ddd;
-                            border-radius:5px;
-                            box-sizing:border-box;
-                        "
-                    >
-
-                </div>
-
-
-                {{-- Payment Method --}}
-                <div style="margin-bottom:20px;">
-
-                    <label>
-                        <strong>Payment Method</strong>
-                    </label>
-
-                    <select
-                        name="payment_method"
-                        required
-                        style="
-                            width:100%;
-                            padding:12px;
-                            margin-top:6px;
-                            border:1px solid #ddd;
-                            border-radius:5px;
-                            box-sizing:border-box;
-                        "
-                    >
-
-                        <option value="">
-                            Select Payment Method
-                        </option>
-
-                        <option value="cod">
-                            Cash on Delivery
-                        </option>
-
-                    </select>
-
-                </div>
-
-
-                {{-- Place Order --}}
-                <button
-                    type="submit"
-                    style="
-                        width:100%;
-                        padding:14px;
-                        background:#e63946;
-                        color:white;
-                        border:none;
-                        border-radius:6px;
-                        cursor:pointer;
-                        font-size:16px;
-                        font-weight:bold;
-                    "
-                >
-                    Place Order
-                </button>
-
-            </form>
 
         </div>
 

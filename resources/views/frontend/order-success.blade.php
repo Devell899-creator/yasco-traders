@@ -5,20 +5,20 @@
 @section('content')
 
     <div style="
-        max-width:900px;
-        margin:60px auto;
-        padding:30px;
-        background:#fff;
-        border-radius:10px;
-        box-shadow:0 2px 10px rgba(0,0,0,.1);
-        color:#222;
-    ">
+            max-width:900px;
+            margin:60px auto;
+            padding:30px;
+            background:#fff;
+            border-radius:10px;
+            box-shadow:0 2px 10px rgba(0,0,0,.1);
+            color:#222;
+        ">
 
         <h1 style="
-            color:#28a745;
-            margin-top:0;
-            margin-bottom:20px;
-        ">
+                color:#28a745;
+                margin-top:0;
+                margin-bottom:20px;
+            ">
             Order Placed Successfully!
         </h1>
 
@@ -62,22 +62,22 @@
         <hr>
 
         <h2 style="
-            color:#222;
-            margin-top:25px;
-        ">
+                color:#222;
+                margin-top:25px;
+            ">
             Order Summary
         </h2>
 
         @foreach($order->items as $item)
 
             <div style="
-                    display:flex;
-                    justify-content:space-between;
-                    align-items:center;
-                    padding:15px 0;
-                    border-bottom:1px solid #eee;
-                    color:#333;
-                ">
+                            display:flex;
+                            justify-content:space-between;
+                            align-items:center;
+                            padding:15px 0;
+                            border-bottom:1px solid #eee;
+                            color:#333;
+                        ">
 
                 <div>
 
@@ -104,14 +104,14 @@
         @endforeach
 
         <div style="
-            display:flex;
-            justify-content:space-between;
-            margin-top:25px;
-            padding-top:20px;
-            border-top:2px solid #222;
-            font-size:22px;
-            color:#222;
-        ">
+                display:flex;
+                justify-content:space-between;
+                margin-top:25px;
+                padding-top:20px;
+                border-top:2px solid #222;
+                font-size:22px;
+                color:#222;
+            ">
 
             <strong>Total</strong>
 
@@ -124,13 +124,13 @@
         <div style="margin-top:30px;">
 
             <a href="{{ route('frontend.products') }}" style="
-                display:inline-block;
-                background:#e63946;
-                color:white;
-                padding:12px 22px;
-                text-decoration:none;
-                border-radius:6px;
-            ">
+                    display:inline-block;
+                    background:#e63946;
+                    color:white;
+                    padding:12px 22px;
+                    text-decoration:none;
+                    border-radius:6px;
+                ">
                 Continue Shopping
             </a>
 
