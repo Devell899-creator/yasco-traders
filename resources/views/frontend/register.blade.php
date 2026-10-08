@@ -1,104 +1,153 @@
-<!DOCTYPE html>
-<html lang="en">
+@extends('frontend.layouts.app')
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+@section('title', 'Create Account | YASCO Traders')
 
-    <title>Create Account - YASCO Traders</title>
+@section('content')
 
     <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        body {
-            font-family: Arial, sans-serif;
-            background: #f5f5f5;
-            min-height: 100vh;
+        .register-page {
+            min-height: 700px;
+            background: #f7f7f7;
             display: flex;
-            justify-content: center;
             align-items: center;
-            padding: 20px;
+            justify-content: center;
+            padding: 60px 20px;
         }
 
-        .register-container {
+        .register-box {
             width: 100%;
-            max-width: 450px;
-            background: white;
-            padding: 35px;
-            border-radius: 10px;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.10);
+            max-width: 480px;
+            background: #fff;
+            border: 1px solid #eee;
+            border-radius: 16px;
+            padding: 40px;
+            box-shadow: 0 12px 35px rgba(0, 0, 0, .08);
         }
 
-        .register-container h2 {
+        .register-heading {
             text-align: center;
-            margin-bottom: 25px;
-            color: #222;
+            margin-bottom: 30px;
         }
+
+        .register-heading span {
+            display: inline-block;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            color: #777;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+        }
+
+        .register-heading h1 {
+            color: #222;
+            font-size: 32px;
+            margin: 0 0 10px;
+        }
+
+        .register-heading p {
+            color: #777;
+            font-size: 14px;
+            margin: 0;
+            line-height: 1.6;
+        }
+
+
+        /* =========================
+           ERRORS
+        ========================= */
+
+        .errors {
+            background: #fff0f0;
+            color: #c1121f;
+            border: 1px solid #ffd5d5;
+            padding: 12px 15px;
+            border-radius: 7px;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        .errors ul {
+            margin: 0;
+            padding-left: 20px;
+        }
+
+        .errors li {
+            margin: 4px 0;
+        }
+
+
+        /* =========================
+           FORM
+        ========================= */
 
         .form-group {
-            margin-bottom: 18px;
+            margin-bottom: 17px;
         }
 
         .form-group label {
             display: block;
             margin-bottom: 7px;
-            font-weight: 600;
             color: #333;
+            font-size: 14px;
+            font-weight: 600;
         }
 
         .form-group input {
             width: 100%;
-            padding: 12px;
-            border: 1px solid #ccc;
-            border-radius: 6px;
+            padding: 13px 14px;
+            border: 1px solid #ddd;
+            border-radius: 7px;
             font-size: 15px;
+            font-family: inherit;
             outline: none;
+            transition: .3s;
         }
 
         .form-group input:focus {
-            border-color: #007bff;
+            border-color: #222;
+            box-shadow: 0 0 0 2px rgba(34, 34, 34, .05);
         }
+
+
+        /* =========================
+           REGISTER BUTTON
+        ========================= */
 
         .register-btn {
             width: 100%;
-            padding: 12px;
+            padding: 13px;
+            margin-top: 5px;
             border: none;
-            border-radius: 6px;
-            background: #007bff;
-            color: white;
-            font-size: 16px;
+            border-radius: 7px;
+            background: #222;
+            color: #fff;
+            font-size: 15px;
             font-weight: 600;
             cursor: pointer;
+            transition: .3s;
         }
 
         .register-btn:hover {
-            background: #0056b3;
+            background: #444;
         }
 
-        .errors {
-            background: #ffe6e6;
-            color: #d00;
-            padding: 12px;
-            border-radius: 6px;
-            margin-bottom: 20px;
-        }
 
-        .errors ul {
-            padding-left: 20px;
-        }
+        /* =========================
+           LOGIN LINK
+        ========================= */
 
         .login-link {
             text-align: center;
-            margin-top: 20px;
-            color: #555;
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+            color: #777;
+            font-size: 14px;
         }
 
         .login-link a {
-            color: #007bff;
+            color: #222;
             text-decoration: none;
             font-weight: 600;
         }
@@ -107,79 +156,171 @@
             text-decoration: underline;
         }
 
-        @media (max-width: 480px) {
-            body {
-                padding: 15px;
+
+        /* =========================
+           MOBILE
+        ========================= */
+
+        @media (max-width: 600px) {
+
+            .register-page {
+                min-height: 650px;
+                padding: 40px 15px;
             }
 
-            .register-container {
-                padding: 25px 20px;
+            .register-box {
+                padding: 30px 22px;
             }
 
-            .register-container h2 {
-                font-size: 24px;
+            .register-heading h1 {
+                font-size: 28px;
             }
+
         }
     </style>
-</head>
 
-<body>
 
-    <div class="register-container">
+    <section class="register-page">
 
-        <h2>Create Account</h2>
+        <div class="register-box">
 
-        @if ($errors->any())
-            <div class="errors">
-                <ul>
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif
 
-        <form method="POST" action="{{ route('frontend.register.submit') }}">
-            @csrf
+            {{-- Heading --}}
 
-            <div class="form-group">
-                <label>Name</label>
-                <input type="text" name="name" value="{{ old('name') }}" placeholder="Enter your name" required>
+            <div class="register-heading">
+
+                <span>Join YASCO Traders</span>
+
+                <h1>Create Account</h1>
+
+                <p>
+                    Create your account and start shopping with YASCO Traders.
+                </p>
+
             </div>
 
-            <div class="form-group">
-                <label>Email</label>
-                <input type="email" name="email" value="{{ old('email') }}" placeholder="Enter your email" required>
+
+            {{-- Validation Errors --}}
+
+            @if ($errors->any())
+
+                <div class="errors">
+
+                    <ul>
+
+                        @foreach ($errors->all() as $error)
+
+                            <li>
+                                {{ $error }}
+                            </li>
+
+                        @endforeach
+
+                    </ul>
+
+                </div>
+
+            @endif
+
+
+            {{-- Register Form --}}
+
+            <form method="POST" action="{{ route('frontend.register.submit') }}">
+
+                @csrf
+
+
+                {{-- Name --}}
+
+                <div class="form-group">
+
+                    <label for="name">
+                        Full Name
+                    </label>
+
+                    <input type="text" id="name" name="name" value="{{ old('name') }}" placeholder="Enter your name"
+                        required>
+
+                </div>
+
+
+                {{-- Email --}}
+
+                <div class="form-group">
+
+                    <label for="email">
+                        Email Address
+                    </label>
+
+                    <input type="email" id="email" name="email" value="{{ old('email') }}" placeholder="Enter your email"
+                        required>
+
+                </div>
+
+
+                {{-- Phone --}}
+
+                <div class="form-group">
+
+                    <label for="phone">
+                        Phone Number
+                    </label>
+
+                    <input type="tel" id="phone" name="phone" value="{{ old('phone') }}"
+                        placeholder="Enter your phone number" required>
+
+                </div>
+
+
+                {{-- Password --}}
+
+                <div class="form-group">
+
+                    <label for="password">
+                        Password
+                    </label>
+
+                    <input type="password" id="password" name="password" placeholder="Enter password" required>
+
+                </div>
+
+
+                {{-- Confirm Password --}}
+
+                <div class="form-group">
+
+                    <label for="password_confirmation">
+                        Confirm Password
+                    </label>
+
+                    <input type="password" id="password_confirmation" name="password_confirmation"
+                        placeholder="Confirm your password" required>
+
+                </div>
+
+
+                <button type="submit" class="register-btn">
+                    Create Account
+                </button>
+
+            </form>
+
+
+            {{-- Login Link --}}
+
+            <div class="login-link">
+
+                Already have an account?
+
+                <a href="{{ route('frontend.login') }}">
+                    Login
+                </a>
+
             </div>
 
-            <div class="form-group">
-                <label>Phone</label>
-                <input type="tel" name="phone" value="{{ old('phone') }}" placeholder="Enter your phone number"
-                    required>
-            </div>
 
-            <div class="form-group">
-                <label>Password</label>
-                <input type="password" name="password" placeholder="Enter password" required>
-            </div>
-
-            <div class="form-group">
-                <label>Confirm Password</label>
-                <input type="password" name="password_confirmation" placeholder="Confirm password" required>
-            </div>
-
-            <button type="submit" class="register-btn">
-                Create Account
-            </button>
-        </form>
-
-        <div class="login-link">
-            Already have an account?
-            <a href="{{ route('frontend.login') }}">Login</a>
         </div>
 
-    </div>
+    </section>
 
-</body>
-
-</html>
+@endsection

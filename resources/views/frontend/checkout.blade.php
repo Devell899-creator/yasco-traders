@@ -5,17 +5,55 @@
 @section('content')
 
     <style>
-        .checkout-container {
-            max-width: 1100px;
-            margin: 50px auto;
-            padding: 0 20px;
+        /* ==============================
+           CHECKOUT PAGE
+        ============================== */
+
+        .checkout-page {
+            background: #f6f6f6;
+            padding: 60px 20px;
+            min-height: 75vh;
         }
 
-        .checkout-title {
-            text-align: center;
-            color: #222;
+        .checkout-container {
+            max-width: 1100px;
+            margin: auto;
+        }
+
+        /* ==============================
+           HEADER
+        ============================== */
+
+        .checkout-header {
             margin-bottom: 35px;
         }
+
+        .checkout-header span {
+            display: block;
+            color: #777;
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+
+        .checkout-header h1 {
+            margin: 0;
+            color: #222;
+            font-size: 38px;
+            font-weight: 700;
+        }
+
+        .checkout-header p {
+            color: #777;
+            margin: 10px 0 0;
+            font-size: 15px;
+        }
+
+        /* ==============================
+           GRID
+        ============================== */
 
         .checkout-grid {
             display: grid;
@@ -24,115 +62,257 @@
             align-items: start;
         }
 
+        /* ==============================
+           BOX
+        ============================== */
+
         .checkout-box {
             background: #fff;
-            padding: 25px;
-            border-radius: 10px;
-            box-shadow: 0 2px 12px rgba(0, 0, 0, .08);
-            margin-bottom: 25px;
+            border: 1px solid #e8e8e8;
+            border-radius: 14px;
+            padding: 28px;
+            margin-bottom: 22px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
         }
 
-        .checkout-box h2 {
-            margin-top: 0;
-            margin-bottom: 22px;
-            color: #222;
-            font-size: 21px;
-        }
+        /* ==============================
+           SECTION TITLE
+        ============================== */
 
         .section-title {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
+            margin: 0 0 25px;
+            color: #222;
+            font-size: 21px;
         }
 
         .section-number {
-            width: 30px;
-            height: 30px;
+            width: 32px;
+            height: 32px;
+            min-width: 32px;
+
             display: flex;
             align-items: center;
             justify-content: center;
-            background: #e63946;
+
+            background: #222;
             color: #fff;
+
             border-radius: 50%;
-            font-size: 14px;
-            font-weight: bold;
+
+            font-size: 13px;
+            font-weight: 700;
         }
 
+        /* ==============================
+           FORM
+        ============================== */
+
         .form-group {
-            margin-bottom: 18px;
+            margin-bottom: 19px;
         }
 
         .form-group label {
             display: block;
             margin-bottom: 7px;
+
             color: #333;
-            font-weight: 600;
             font-size: 14px;
+            font-weight: 600;
         }
 
         .form-control {
             width: 100%;
-            padding: 12px;
+            padding: 13px 14px;
+
             border: 1px solid #ddd;
-            border-radius: 6px;
-            box-sizing: border-box;
+            border-radius: 7px;
+
+            background: #fff;
+            color: #222;
+
             font-size: 14px;
+
             outline: none;
+            box-sizing: border-box;
+
+            transition: 0.2s ease;
         }
 
         .form-control:focus {
-            border-color: #e63946;
+            border-color: #222;
+            box-shadow: 0 0 0 3px rgba(34, 34, 34, 0.06);
         }
 
         textarea.form-control {
             resize: vertical;
+            min-height: 110px;
         }
 
+        /* ==============================
+           LOGIN NOTICE
+        ============================== */
+
         .login-notice {
-            background: #f8f8f8;
-            border-left: 4px solid #e63946;
-            padding: 15px;
-            margin-bottom: 22px;
-            border-radius: 5px;
+            background: #f7f7f7;
+            border: 1px solid #e5e5e5;
+
+            padding: 16px;
+
+            border-radius: 8px;
+
+            margin-bottom: 25px;
         }
 
         .login-notice strong {
             color: #222;
+            font-size: 14px;
         }
 
         .login-notice a {
-            color: #e63946;
-            font-weight: bold;
-            text-decoration: none;
+            color: #222;
+            font-weight: 700;
+            text-decoration: underline;
+            margin-left: 5px;
         }
 
         .login-notice p {
-            margin: 7px 0 0;
-            color: #666;
+            color: #777;
             font-size: 13px;
+            margin: 8px 0 0;
         }
+
+        /* ==============================
+           ACCOUNT BOX
+        ============================== */
 
         .account-box {
             background: #fafafa;
-            border: 1px solid #eee;
-            padding: 18px;
-            border-radius: 7px;
-            margin-bottom: 22px;
+            border: 1px solid #e5e5e5;
+
+            padding: 20px;
+
+            border-radius: 9px;
+
+            margin-bottom: 28px;
         }
 
         .account-box h3 {
-            margin: 0 0 8px;
+            margin: 0 0 7px;
             color: #222;
             font-size: 17px;
         }
 
-        .account-box p {
-            color: #666;
+        .account-box>p {
+            margin: 0 0 20px;
+            color: #777;
             font-size: 13px;
-            margin: 0 0 18px;
+            line-height: 1.6;
         }
 
-        /* ORDER SUMMARY */
+        /* ==============================
+           PAYMENT
+        ============================== */
+
+        .payment-box {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+
+            padding: 16px;
+
+            background: #fafafa;
+        }
+
+        .payment-option {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+
+            cursor: pointer;
+
+            color: #222;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .payment-option input {
+            width: 17px;
+            height: 17px;
+            accent-color: #222;
+        }
+
+        .payment-description {
+            margin: 8px 0 0 29px;
+            color: #777;
+            font-size: 13px;
+        }
+
+        /* ==============================
+           ERROR
+        ============================== */
+
+        .error-box {
+            background: #fff2f2;
+            color: #b42318;
+
+            border: 1px solid #f2c4c4;
+            border-radius: 8px;
+
+            padding: 15px 18px;
+
+            margin-bottom: 25px;
+        }
+
+        .error-box strong {
+            display: block;
+            margin-bottom: 7px;
+        }
+
+        .error-box ul {
+            margin: 0;
+            padding-left: 20px;
+        }
+
+        .error-box li {
+            margin-bottom: 3px;
+            font-size: 14px;
+        }
+
+        /* ==============================
+           PLACE ORDER
+        ============================== */
+
+        .place-order-btn {
+            width: 100%;
+
+            margin-top: 20px;
+
+            padding: 15px;
+
+            background: #222;
+            color: #fff;
+
+            border: none;
+            border-radius: 7px;
+
+            font-size: 15px;
+            font-weight: 700;
+
+            cursor: pointer;
+
+            transition: 0.3s ease;
+        }
+
+        .place-order-btn:hover {
+            background: #000;
+            transform: translateY(-1px);
+        }
+
+        /* ==============================
+           ORDER SUMMARY
+        ============================== */
 
         .order-summary {
             position: sticky;
@@ -141,9 +321,34 @@
 
         .product-item {
             display: flex;
-            gap: 12px;
+            align-items: center;
+            gap: 14px;
+
             padding: 15px 0;
+
             border-bottom: 1px solid #eee;
+        }
+
+        .product-image {
+            width: 65px;
+            height: 65px;
+            min-width: 65px;
+
+            background: #f7f7f7;
+            border-radius: 8px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            overflow: hidden;
+        }
+
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            padding: 5px;
+            object-fit: contain;
         }
 
         .product-info {
@@ -151,111 +356,89 @@
         }
 
         .product-name {
-            font-weight: bold;
             color: #222;
+            font-size: 14px;
+            font-weight: 700;
             margin-bottom: 6px;
         }
 
         .product-meta {
             color: #777;
-            font-size: 13px;
+            font-size: 12px;
         }
 
         .product-price {
-            font-weight: bold;
             color: #222;
+            font-size: 14px;
+            font-weight: 700;
             white-space: nowrap;
         }
 
+        /* ==============================
+           SUMMARY
+        ============================== */
+
         .summary-row {
             display: flex;
+            align-items: center;
             justify-content: space-between;
-            padding: 10px 0;
-            color: #555;
+
+            padding: 11px 0;
+
+            color: #666;
             font-size: 14px;
+        }
+
+        .summary-row strong {
+            color: #222;
         }
 
         .summary-total {
             display: flex;
+            align-items: center;
             justify-content: space-between;
+
             border-top: 1px solid #ddd;
+
             margin-top: 10px;
-            padding-top: 18px;
-            font-size: 20px;
-            font-weight: bold;
+            padding-top: 20px;
+
             color: #222;
+            font-size: 21px;
+            font-weight: 700;
         }
 
         .summary-total span:last-child {
-            color: #e63946;
+            font-size: 23px;
         }
 
-        .payment-box {
-            border: 1px solid #ddd;
-            padding: 15px;
-            border-radius: 7px;
-            background: #fafafa;
+        .secure-note {
+            margin-top: 18px;
+            padding-top: 15px;
+
+            border-top: 1px solid #eee;
+
+            color: #777;
+            font-size: 12px;
+            text-align: center;
         }
 
-        .payment-box label {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            cursor: pointer;
-            color: #222;
-            font-weight: 600;
-        }
-
-        .payment-box input {
-            accent-color: #e63946;
-        }
-
-        .place-order-btn {
-            width: 100%;
-            padding: 15px;
-            background: #e63946;
-            color: white;
-            border: none;
-            border-radius: 7px;
-            cursor: pointer;
-            font-size: 16px;
-            font-weight: bold;
-            margin-top: 10px;
-        }
-
-        .place-order-btn:hover {
-            background: #c92f3b;
-        }
-
-        .error-box {
-            background: #ffe8e8;
-            color: #c1121f;
-            padding: 14px;
-            border-radius: 6px;
-            margin-bottom: 20px;
-            border: 1px solid #f5b5b5;
-        }
-
-        .error-box ul {
-            margin: 0;
-            padding-left: 20px;
-        }
+        /* ==============================
+           RESPONSIVE
+        ============================== */
 
         @media (max-width: 768px) {
 
-            .checkout-container {
-                margin: 30px auto;
-                padding: 0 12px;
+            .checkout-page {
+                padding: 40px 15px;
             }
 
-            .checkout-title {
-                font-size: 28px;
-                margin-bottom: 25px;
+            .checkout-header h1 {
+                font-size: 30px;
             }
 
             .checkout-grid {
                 grid-template-columns: 1fr;
-                gap: 0;
             }
 
             .order-summary {
@@ -263,367 +446,467 @@
             }
 
             .checkout-box {
-                padding: 18px;
+                padding: 20px;
             }
 
-            .checkout-box h2 {
+            .section-title {
                 font-size: 19px;
+            }
+        }
+
+        @media (max-width: 500px) {
+
+            .checkout-page {
+                padding: 30px 12px;
+            }
+
+            .checkout-header {
+                margin-bottom: 25px;
+            }
+
+            .checkout-header h1 {
+                font-size: 27px;
+            }
+
+            .checkout-box {
+                padding: 17px;
+                border-radius: 11px;
+            }
+
+            .product-image {
+                width: 55px;
+                min-width: 55px;
+                height: 55px;
+            }
+
+            .product-name {
+                font-size: 13px;
+            }
+
+            .product-price {
+                font-size: 13px;
             }
 
             .summary-total {
                 font-size: 18px;
             }
+
+            .summary-total span:last-child {
+                font-size: 20px;
+            }
         }
     </style>
 
 
-    <div class="checkout-container">
+    <section class="checkout-page">
 
-        <h1 class="checkout-title">
-            Checkout
-        </h1>
+        <div class="checkout-container">
 
 
-        {{-- VALIDATION ERRORS --}}
-        @if($errors->any())
+            {{-- ==============================
+            CHECKOUT HEADER
+            ============================== --}}
 
-            <div class="error-box">
+            <div class="checkout-header">
 
-                <strong>Please fix the following:</strong>
+                <span>YASCO TRADERS</span>
 
-                <ul>
-                    @foreach($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
+                <h1>Checkout</h1>
+
+                <p>
+                    Complete your information and place your order.
+                </p>
 
             </div>
 
-        @endif
+
+            {{-- ==============================
+            VALIDATION ERRORS
+            ============================== --}}
+
+            @if($errors->any())
+
+                <div class="error-box">
+
+                    <strong>
+                        Please fix the following:
+                    </strong>
+
+                    <ul>
+
+                        @foreach($errors->all() as $error)
+
+                            <li>
+                                {{ $error }}
+                            </li>
+
+                        @endforeach
+
+                    </ul>
+
+                </div>
+
+            @endif
 
 
-        <div class="checkout-grid">
+            <div class="checkout-grid">
 
 
-            {{-- ========================= --}}
-            {{-- LEFT SIDE --}}
-            {{-- ========================= --}}
+                {{-- ==============================
+                LEFT SIDE
+                ============================== --}}
 
-            <div>
-
-
-                {{-- CUSTOMER INFORMATION --}}
-
-                <div class="checkout-box">
-
-                    <h2 class="section-title">
-                        <span class="section-number">1</span>
-                        Customer Information
-                    </h2>
+                <div>
 
 
-                    {{-- GUEST LOGIN NOTICE --}}
+                    {{-- CUSTOMER INFORMATION --}}
 
-                    @if(!auth()->check())
+                    <div class="checkout-box">
 
-                        <div class="login-notice">
+                        <h2 class="section-title">
 
-                            <strong>
-                                Already have an account?
-                            </strong>
+                            <span class="section-number">
+                                1
+                            </span>
 
-                            <a href="{{ route('frontend.login') }}">
-                                Login
-                            </a>
+                            Customer Information
 
-                            <p>
-                                Don't have an account?
-                                You can create one while placing your order.
-                            </p>
-
-                        </div>
-
-                    @endif
+                        </h2>
 
 
-                    <form method="POST" action="{{ route('frontend.checkout.place') }}">
-
-                        @csrf
-
-
-                        {{-- NAME --}}
-
-                        <div class="form-group">
-
-                            <label>
-                                Full Name
-                            </label>
-
-                            <input type="text" name="name" class="form-control" placeholder="Enter your full name"
-                                value="{{ old('name', auth()->user()->name ?? '') }}" required>
-
-                        </div>
-
-
-                        {{-- EMAIL --}}
-
-                        <div class="form-group">
-
-                            <label>
-                                Email Address
-                            </label>
-
-                            <input type="email" name="email" class="form-control" placeholder="Enter your email"
-                                value="{{ old('email', auth()->user()->email ?? '') }}" required>
-
-                        </div>
-
-
-                        {{-- PHONE --}}
-
-                        <div class="form-group">
-
-                            <label>
-                                Phone Number
-                            </label>
-
-                            <input type="text" name="phone" class="form-control" placeholder="Enter your phone number"
-                                value="{{ old('phone', auth()->user()->phone ?? '') }}" required>
-
-                        </div>
-
-
-                        {{-- ========================= --}}
-                        {{-- CREATE ACCOUNT --}}
-                        {{-- ========================= --}}
+                        {{-- LOGIN NOTICE --}}
 
                         @if(!auth()->check())
 
-                            <div class="account-box">
+                            <div class="login-notice">
 
-                                <h3>
-                                    Create Your Account
-                                </h3>
+                                <strong>
+                                    Already have an account?
+                                </strong>
+
+                                <a href="{{ route('frontend.login') }}">
+                                    Login
+                                </a>
 
                                 <p>
-                                    Your customer account will be created automatically
-                                    after placing the order.
+                                    Don't have an account?
+                                    You can create one while placing your order.
                                 </p>
-
-
-                                {{-- PASSWORD --}}
-
-                                <div class="form-group">
-
-                                    <label>
-                                        Password
-                                    </label>
-
-                                    <input type="password" name="password" class="form-control"
-                                        placeholder="Minimum 8 characters" required>
-
-                                </div>
-
-
-                                {{-- CONFIRM PASSWORD --}}
-
-                                <div class="form-group">
-
-                                    <label>
-                                        Confirm Password
-                                    </label>
-
-                                    <input type="password" name="password_confirmation" class="form-control"
-                                        placeholder="Confirm your password" required>
-
-                                </div>
 
                             </div>
 
                         @endif
 
 
-                        {{-- ========================= --}}
-                        {{-- DELIVERY INFORMATION --}}
-                        {{-- ========================= --}}
+                        <form method="POST" action="{{ route('frontend.checkout.place') }}">
+
+                            @csrf
+
+
+                            {{-- NAME --}}
+
+                            <div class="form-group">
+
+                                <label for="name">
+                                    Full Name
+                                </label>
+
+                                <input type="text" id="name" name="name" class="form-control"
+                                    placeholder="Enter your full name" value="{{ old('name', auth()->user()->name ?? '') }}"
+                                    required>
+
+                            </div>
+
+
+                            {{-- EMAIL --}}
+
+                            <div class="form-group">
+
+                                <label for="email">
+                                    Email Address
+                                </label>
+
+                                <input type="email" id="email" name="email" class="form-control"
+                                    placeholder="Enter your email" value="{{ old('email', auth()->user()->email ?? '') }}"
+                                    required>
+
+                            </div>
+
+
+                            {{-- PHONE --}}
+
+                            <div class="form-group">
+
+                                <label for="phone">
+                                    Phone Number
+                                </label>
+
+                                <input type="text" id="phone" name="phone" class="form-control"
+                                    placeholder="Enter your phone number"
+                                    value="{{ old('phone', auth()->user()->phone ?? '') }}" required>
+
+                            </div>
+
+
+                            {{-- GUEST ACCOUNT --}}
+
+                            @if(!auth()->check())
+
+                                <div class="account-box">
+
+                                    <h3>
+                                        Create Your Account
+                                    </h3>
+
+                                    <p>
+                                        Your customer account will be created automatically
+                                        after placing the order.
+                                    </p>
+
+
+                                    {{-- PASSWORD --}}
+
+                                    <div class="form-group">
+
+                                        <label for="password">
+                                            Password
+                                        </label>
+
+                                        <input type="password" id="password" name="password" class="form-control"
+                                            placeholder="Minimum 8 characters" required>
+
+                                    </div>
+
+
+                                    {{-- CONFIRM PASSWORD --}}
+
+                                    <div class="form-group">
+
+                                        <label for="password_confirmation">
+                                            Confirm Password
+                                        </label>
+
+                                        <input type="password" id="password_confirmation" name="password_confirmation"
+                                            class="form-control" placeholder="Confirm your password" required>
+
+                                    </div>
+
+                                </div>
+
+                            @endif
+
+
+                            {{-- ==============================
+                            DELIVERY
+                            ============================== --}}
+
+                            <h2 class="section-title">
+
+                                <span class="section-number">
+                                    2
+                                </span>
+
+                                Delivery Information
+
+                            </h2>
+
+
+                            {{-- ADDRESS --}}
+
+                            <div class="form-group">
+
+                                <label for="address">
+                                    Complete Address
+                                </label>
+
+                                <textarea id="address" name="address" class="form-control" rows="4"
+                                    placeholder="House number, street, area..." required>{{ old('address') }}</textarea>
+
+                            </div>
+
+
+                            {{-- CITY --}}
+
+                            <div class="form-group">
+
+                                <label for="city">
+                                    City
+                                </label>
+
+                                <input type="text" id="city" name="city" class="form-control" placeholder="Enter your city"
+                                    value="{{ old('city') }}" required>
+
+                            </div>
+
+
+                            {{-- ==============================
+                            PAYMENT
+                            ============================== --}}
+
+                            <h2 class="section-title">
+
+                                <span class="section-number">
+                                    3
+                                </span>
+
+                                Payment Method
+
+                            </h2>
+
+
+                            <div class="payment-box">
+
+                                <label class="payment-option">
+
+                                    <input type="radio" name="payment_method" value="cod" required>
+
+                                    Cash on Delivery
+
+                                </label>
+
+                                <p class="payment-description">
+                                    Pay when your order is delivered to your address.
+                                </p>
+
+                            </div>
+
+
+                            {{-- PLACE ORDER --}}
+
+                            <button type="submit" class="place-order-btn">
+                                Place Order
+                            </button>
+
+
+                        </form>
+
+                    </div>
+
+                </div>
+
+
+                {{-- ==============================
+                RIGHT SIDE
+                ============================== --}}
+
+                <div>
+
+                    <div class="checkout-box order-summary">
+
 
                         <h2 class="section-title">
 
-                            <span class="section-number">2</span>
+                            <span class="section-number">
+                                4
+                            </span>
 
-                            Delivery Information
+                            Your Order
 
                         </h2>
 
 
-                        {{-- ADDRESS --}}
+                        {{-- PRODUCTS --}}
 
-                        <div class="form-group">
+                        @foreach($cart as $item)
 
-                            <label>
-                                Complete Address
-                            </label>
+                                            <div class="product-item">
 
-                            <textarea name="address" class="form-control" rows="4"
-                                placeholder="House number, street, area..." required>{{ old('address') }}</textarea>
+                                                {{-- PRODUCT INFO --}}
+
+                                                <div class="product-info">
+
+                                                    <div class="product-name">
+                                                        {{ $item['name'] }}
+                                                    </div>
+
+                                                    <div class="product-meta">
+
+                                                        Rs. {{ number_format($item['price'], 2) }}
+
+                                                        ×
+
+                                                        {{ $item['quantity'] }}
+
+                                                    </div>
+
+                                                </div>
+
+
+                                                {{-- PRODUCT TOTAL --}}
+
+                                                <div class="product-price">
+
+                                                    Rs. {{ number_format(
+                                $item['price'] * $item['quantity'],
+                                2
+                            ) }}
+
+                                                </div>
+
+                                            </div>
+
+                        @endforeach
+
+
+                        {{-- SUBTOTAL --}}
+
+                        <div class="summary-row">
+
+                            <span>
+                                Subtotal
+                            </span>
+
+                            <strong>
+                                Rs. {{ number_format($total, 2) }}
+                            </strong>
 
                         </div>
 
 
-                        {{-- CITY --}}
+                        {{-- DELIVERY --}}
 
-                        <div class="form-group">
+                        <div class="summary-row">
 
-                            <label>
-                                City
-                            </label>
+                            <span>
+                                Delivery
+                            </span>
 
-                            <input type="text" name="city" class="form-control" placeholder="Enter your city"
-                                value="{{ old('city') }}" required>
-
-                        </div>
-
-
-                        {{-- ========================= --}}
-                        {{-- PAYMENT --}}
-                        {{-- ========================= --}}
-
-                        <h2 class="section-title">
-
-                            <span class="section-number">3</span>
-
-                            Payment Method
-
-                        </h2>
-
-
-                        <div class="payment-box">
-
-                            <label>
-
-                                <input type="radio" name="payment_method" value="cod" required>
-
-                                Cash on Delivery
-
-                            </label>
+                            <strong>
+                                Free
+                            </strong>
 
                         </div>
 
 
-                        <button type="submit" class="place-order-btn">
-                            Place Order
-                        </button>
+                        {{-- TOTAL --}}
+
+                        <div class="summary-total">
+
+                            <span>
+                                Total
+                            </span>
+
+                            <span>
+                                Rs. {{ number_format($total, 2) }}
+                            </span>
+
+                        </div>
 
 
-                    </form>
+                        <div class="secure-note">
+                            Your order will be processed securely.
+                        </div>
+
+
+                    </div>
 
                 </div>
 
-            </div>
-
-
-            {{-- ========================= --}}
-            {{-- RIGHT SIDE --}}
-            {{-- ========================= --}}
-
-            <div>
-
-
-                <div class="checkout-box order-summary">
-
-                    <h2 class="section-title">
-
-                        <span class="section-number">
-                            4
-                        </span>
-
-                        Your Order
-
-                    </h2>
-
-
-                    {{-- PRODUCTS --}}
-
-                    {{-- PRODUCTS --}}
-
-                    @foreach($cart as $item)
-
-                        <div class="product-item">
-
-                            <div class="product-info">
-
-                                <div class="product-name">
-                                    {{ $item['name'] }}
-                                </div>
-
-                                <div class="product-meta">
-                                    Rs. {{ number_format($item['price'], 2) }}
-                                    ×
-                                    {{ $item['quantity'] }}
-                                </div>
-
-                            </div>
-
-                            <div class="product-price">
-                                Rs. {{ number_format($item['price'] * $item['quantity'], 2) }}
-                            </div>
-
-                        </div>
-
-                    @endforeach
-
-                    {{-- SUBTOTAL --}}
-
-                    <div class="summary-row">
-
-                        <span>
-                            Subtotal
-                        </span>
-
-                        <strong>
-                            Rs. {{ number_format($total, 2) }}
-                        </strong>
-
-                    </div>
-
-
-                    {{-- DELIVERY --}}
-
-                    <div class="summary-row">
-
-                        <span>
-                            Delivery
-                        </span>
-
-                        <strong>
-                            Free
-                        </strong>
-
-                    </div>
-
-
-                    {{-- TOTAL --}}
-
-                    <div class="summary-total">
-
-                        <span>
-                            Total
-                        </span>
-
-                        <span>
-                            Rs. {{ number_format($total, 2) }}
-                        </span>
-
-                    </div>
-
-
-                </div>
 
             </div>
-
 
         </div>
 
-    </div>
+    </section>
 
 @endsection

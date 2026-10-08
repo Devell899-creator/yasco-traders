@@ -5,116 +5,270 @@
 @section('content')
 
     <style>
-        .contact-banner {
-            background: #e63946;
+        /* =========================
+           CONTACT HERO
+        ========================= */
+
+        .contact-hero {
+            background: #222;
             color: #fff;
             text-align: center;
-            padding: 60px 20px;
+            padding: 85px 20px;
         }
 
-        .contact-banner h1 {
-            font-size: 42px;
-            margin-bottom: 10px;
+        .contact-hero span {
+            display: inline-block;
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            color: #ccc;
+            margin-bottom: 12px;
+            text-transform: uppercase;
         }
 
-        .contact-banner p {
-            font-size: 18px;
+        .contact-hero h1 {
+            font-size: 46px;
+            margin: 0 0 15px;
         }
+
+        .contact-hero p {
+            color: #ccc;
+            font-size: 17px;
+            margin: 0;
+        }
+
+
+        /* =========================
+           CONTACT SECTION
+        ========================= */
 
         .contact-section {
             max-width: 1200px;
-            margin: 60px auto;
-            display: flex;
-            gap: 40px;
-            padding: 20px;
+            margin: 0 auto;
+            padding: 80px 25px;
+            display: grid;
+            grid-template-columns: 1.1fr .9fr;
+            gap: 35px;
         }
 
-        .contact-form,
-        .contact-info {
-            flex: 1;
+
+        /* =========================
+           FORM
+        ========================= */
+
+        .contact-form {
             background: #fff;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, .1);
+            border: 1px solid #eee;
+            border-radius: 14px;
+            padding: 35px;
         }
 
-        .contact-form h2,
-        .contact-info h2 {
-            margin-bottom: 20px;
+        .contact-form span {
+            display: inline-block;
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            color: #777;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+
+        .contact-form h2 {
             color: #222;
+            font-size: 30px;
+            margin: 0 0 25px;
+        }
+
+        .form-group {
+            margin-bottom: 17px;
+        }
+
+        .form-group label {
+            display: block;
+            color: #333;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 7px;
         }
 
         .contact-form input,
         .contact-form textarea {
             width: 100%;
-            padding: 12px;
-            margin-bottom: 15px;
+            padding: 13px 14px;
             border: 1px solid #ddd;
-            border-radius: 5px;
-            font-size: 16px;
+            border-radius: 7px;
+            font-size: 15px;
+            font-family: inherit;
+            outline: none;
+            transition: .3s;
+        }
+
+        .contact-form input:focus,
+        .contact-form textarea:focus {
+            border-color: #222;
+            box-shadow: 0 0 0 2px rgba(34, 34, 34, .05);
+        }
+
+        .contact-form textarea {
+            height: 140px;
+            resize: vertical;
         }
 
         .contact-form button {
-            background: #e63946;
+            width: 100%;
+            background: #222;
             color: #fff;
             border: none;
-            padding: 12px 25px;
-            border-radius: 5px;
+            padding: 13px 20px;
+            border-radius: 7px;
+            font-size: 15px;
+            font-weight: 600;
             cursor: pointer;
+            transition: .3s;
         }
 
         .contact-form button:hover {
-            background: #c92f3b;
+            background: #444;
         }
 
-        .contact-info p {
-            color: #555;
-            margin-bottom: 12px;
-            line-height: 1.8;
+
+        /* =========================
+           CONTACT INFORMATION
+        ========================= */
+
+        .contact-info {
+            background: #f7f7f7;
+            border-radius: 14px;
+            padding: 35px;
         }
 
-        .contact-info h3 {
-            margin-top: 25px;
+        .contact-info span {
+            display: inline-block;
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            color: #777;
             margin-bottom: 10px;
-            color: #222;
+            text-transform: uppercase;
         }
+
+        .contact-info h2 {
+            color: #222;
+            font-size: 30px;
+            margin: 0 0 25px;
+        }
+
+        .info-item {
+            padding: 17px 0;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .info-item:last-of-type {
+            border-bottom: none;
+        }
+
+        .info-item h3 {
+            color: #222;
+            font-size: 15px;
+            margin: 0 0 6px;
+        }
+
+        .info-item p {
+            color: #666;
+            margin: 0;
+            font-size: 15px;
+            line-height: 1.6;
+        }
+
+        .business-hours {
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 1px solid #ddd;
+        }
+
+        .business-hours h3 {
+            color: #222;
+            font-size: 17px;
+            margin: 0 0 10px;
+        }
+
+        .business-hours p {
+            color: #666;
+            margin: 5px 0;
+            font-size: 14px;
+        }
+
+
+        /* =========================
+           MAP
+        ========================= */
 
         .map-section {
             max-width: 1200px;
-            margin: 50px auto;
-            padding: 20px;
-            text-align: center;
+            margin: 0 auto;
+            padding: 0 25px 80px;
         }
 
-        .map-section h2 {
+        .map-heading {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .map-heading span {
+            display: inline-block;
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            color: #777;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+
+        .map-heading h2 {
             color: #222;
+            font-size: 32px;
+            margin: 0;
         }
 
         .map-box {
-            margin-top: 20px;
             height: 350px;
-            background: #eee;
+            background: #f3f3f3;
+            border: 1px solid #eee;
+            border-radius: 14px;
             display: flex;
-            justify-content: center;
             align-items: center;
-            border-radius: 10px;
-            color: #555;
-            font-size: 20px;
+            justify-content: center;
+            color: #777;
+            font-size: 18px;
         }
 
-        @media(max-width:768px) {
 
-            .contact-section {
-                flex-direction: column;
+        /* =========================
+           RESPONSIVE
+        ========================= */
+
+        @media (max-width: 800px) {
+
+            .contact-hero {
+                padding: 60px 20px;
             }
 
-            .contact-banner h1 {
-                font-size: 30px;
+            .contact-hero h1 {
+                font-size: 34px;
+            }
+
+            .contact-section {
+                grid-template-columns: 1fr;
+                padding: 55px 15px;
             }
 
             .contact-form,
             .contact-info {
-                width: 100%;
+                padding: 25px;
+            }
+
+            .map-section {
+                padding: 0 15px 55px;
             }
 
             .map-box {
@@ -125,90 +279,202 @@
     </style>
 
 
-    <section class="contact-banner">
+    {{-- =========================
+    CONTACT HERO
+    ========================= --}}
+
+    <section class="contact-hero">
+
+        <span>Get In Touch</span>
 
         <h1>Contact Us</h1>
 
         <p>
-            We're Here To Help You
+            We're here to help you with your mobile accessory needs.
         </p>
 
     </section>
 
 
+    {{-- =========================
+    CONTACT SECTION
+    ========================= --}}
+
     <section class="contact-section">
 
+
         {{-- Contact Form --}}
+
         <div class="contact-form">
 
-            <h2>Send Us A Message</h2>
+            <span>Send Message</span>
+
+            <h2>How Can We Help?</h2>
 
             <form action="{{ route('frontend.contact.store') }}" method="POST">
+
                 @csrf
 
-                <input type="text" name="name" placeholder="Your Name">
 
-                <input type="email" name="email" placeholder="Your Email">
+                <div class="form-group">
 
-                <input type="text" name="phone" placeholder="Phone Number">
+                    <label for="name">
+                        Your Name
+                    </label>
 
-                <input type="text" name="subject" placeholder="Subject">
+                    <input type="text" id="name" name="name" placeholder="Enter your name">
 
-                <textarea name="message" placeholder="Your Message"></textarea>
+                </div>
 
-                <button type="submit">Send Message</button>
+
+                <div class="form-group">
+
+                    <label for="email">
+                        Your Email
+                    </label>
+
+                    <input type="email" id="email" name="email" placeholder="Enter your email">
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="phone">
+                        Phone Number
+                    </label>
+
+                    <input type="text" id="phone" name="phone" placeholder="Enter your phone number">
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="subject">
+                        Subject
+                    </label>
+
+                    <input type="text" id="subject" name="subject" placeholder="Enter subject">
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="message">
+                        Your Message
+                    </label>
+
+                    <textarea id="message" name="message" placeholder="Write your message here..."></textarea>
+
+                </div>
+
+
+                <button type="submit">
+                    Send Message
+                </button>
+
             </form>
+
         </div>
 
 
         {{-- Contact Information --}}
+
         <div class="contact-info">
 
-            <h2>Contact Information</h2>
+            <span>Contact Details</span>
 
-            <p>
-                <strong>Company:</strong>
-                YASCO Traders
-            </p>
+            <h2>Let's Talk</h2>
 
-            <p>
-                <strong>Phone:</strong>
-                +92 300 1234567
-            </p>
 
-            <p>
-                <strong>Email:</strong>
-                info@yascotraders.com
-            </p>
+            <div class="info-item">
 
-            <p>
-                <strong>Address:</strong>
-                Gujranwala, Pakistan
-            </p>
+                <h3>Company</h3>
 
-            <h3>Business Hours</h3>
+                <p>
+                    YASCO Traders
+                </p>
 
-            <p>
-                Monday - Saturday
-            </p>
+            </div>
 
-            <p>
-                09:00 AM - 07:00 PM
-            </p>
+
+            <div class="info-item">
+
+                <h3>Phone</h3>
+
+                <p>
+                    +92 300 1234567
+                </p>
+
+            </div>
+
+
+            <div class="info-item">
+
+                <h3>Email</h3>
+
+                <p>
+                    info@yascotraders.com
+                </p>
+
+            </div>
+
+
+            <div class="info-item">
+
+                <h3>Address</h3>
+
+                <p>
+                    Gujranwala, Pakistan
+                </p>
+
+            </div>
+
+
+            <div class="business-hours">
+
+                <h3>Business Hours</h3>
+
+                <p>
+                    Monday - Saturday
+                </p>
+
+                <p>
+                    09:00 AM - 07:00 PM
+                </p>
+
+            </div>
 
         </div>
 
+
     </section>
 
+
+    {{-- =========================
+    LOCATION
+    ========================= --}}
 
     <section class="map-section">
 
-        <h2>Our Location</h2>
+        <div class="map-heading">
+
+            <span>Find Us</span>
+
+            <h2>Our Location</h2>
+
+        </div>
+
 
         <div class="map-box">
+
             Google Map Here
+
         </div>
 
     </section>
+
 
 @endsection

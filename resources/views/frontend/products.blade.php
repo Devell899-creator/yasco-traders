@@ -6,260 +6,659 @@
 
 <style>
 
-    .search-section {
-        width: 100%;
-        padding: 40px 60px;
-        text-align: center;
+/* =========================
+   PRODUCTS PAGE
+========================= */
+
+.products-page {
+    background: #ffffff;
+    min-height: 100vh;
+}
+
+
+/* =========================
+   PAGE HERO
+========================= */
+
+.products-hero {
+    background: #222;
+    color: #ffffff;
+    text-align: center;
+    padding: 75px 20px;
+}
+
+.products-hero span {
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    margin-bottom: 12px;
+}
+
+.products-hero h1 {
+    font-size: 46px;
+    margin-bottom: 15px;
+}
+
+.products-hero p {
+    max-width: 600px;
+    margin: auto;
+    color: #cccccc;
+    font-size: 16px;
+    line-height: 1.7;
+}
+
+
+/* =========================
+   FILTER SECTION
+========================= */
+
+.filter-section {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 50px 20px 20px;
+}
+
+.filter-heading {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.filter-heading h2 {
+    font-size: 25px;
+    color: #222;
+    margin-bottom: 7px;
+}
+
+.filter-heading p {
+    color: #777;
+    font-size: 14px;
+}
+
+
+/* Filter box */
+
+.filter-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    max-width: 750px;
+    margin: auto;
+}
+
+
+/* Input */
+
+.filter-box input,
+.filter-box select {
+    height: 48px;
+    border: 1px solid #dddddd;
+    border-radius: 6px;
+    background: #ffffff;
+    color: #222;
+    font-size: 14px;
+    padding: 0 15px;
+    outline: none;
+    transition: 0.3s;
+}
+
+
+.filter-box input {
+    flex: 1;
+    min-width: 280px;
+}
+
+
+.filter-box select {
+    width: 210px;
+    cursor: pointer;
+}
+
+
+.filter-box input:focus,
+.filter-box select:focus {
+    border-color: #222;
+}
+
+
+/* =========================
+   PRODUCTS SECTION
+========================= */
+
+.products-section {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 45px 20px 80px;
+}
+
+
+/* Product grid */
+
+.products-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+}
+
+
+/* =========================
+   PRODUCT CARD
+========================= */
+
+.product-card {
+    background: #ffffff;
+
+    border: 1px solid #eeeeee;
+
+    border-radius: 10px;
+
+    overflow: hidden;
+
+    transition: 0.3s;
+}
+
+
+.product-card:hover {
+    transform: translateY(-6px);
+
+    box-shadow:
+        0 12px 30px rgba(0, 0, 0, 0.10);
+}
+
+
+/* =========================
+   PRODUCT IMAGE
+========================= */
+
+.product-image {
+    width: 100%;
+    height: 240px;
+
+    background: #f7f7f7;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    overflow: hidden;
+}
+
+
+.product-image img {
+    width: 100%;
+    height: 100%;
+
+    object-fit: contain;
+
+    padding: 20px;
+
+    transition: 0.4s;
+}
+
+
+.product-card:hover .product-image img {
+    transform: scale(1.06);
+}
+
+
+.no-image {
+    color: #999;
+    font-size: 14px;
+}
+
+
+/* =========================
+   PRODUCT INFO
+========================= */
+
+.product-info {
+    padding: 20px;
+}
+
+
+.product-quality {
+    display: block;
+
+    color: #777;
+
+    font-size: 10px;
+
+    font-weight: 700;
+
+    letter-spacing: 1.5px;
+
+    margin-bottom: 8px;
+}
+
+
+.product-info h3 {
+    color: #222;
+
+    font-size: 18px;
+
+    margin-bottom: 8px;
+
+    line-height: 1.4;
+}
+
+
+.product-category {
+    color: #777;
+
+    font-size: 13px;
+
+    margin-bottom: 18px;
+}
+
+
+/* =========================
+   PRICE + BUTTON
+========================= */
+
+.product-bottom {
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    gap: 10px;
+}
+
+
+.product-price {
+    color: #222;
+
+    font-size: 16px;
+
+    font-weight: 700;
+}
+
+
+.view-product {
+    display: inline-block;
+
+    background: #222;
+
+    color: #ffffff;
+
+    text-decoration: none;
+
+    padding: 8px 13px;
+
+    border-radius: 5px;
+
+    font-size: 12px;
+
+    font-weight: 600;
+
+    transition: 0.3s;
+}
+
+
+.view-product:hover {
+    background: #444;
+
+    transform: translateY(-1px);
+}
+
+
+/* =========================
+   EMPTY PRODUCTS
+========================= */
+
+.no-products {
+    grid-column: 1 / -1;
+
+    text-align: center;
+
+    padding: 70px 20px;
+
+    color: #777;
+}
+
+
+.no-products h3 {
+    color: #222;
+
+    margin-bottom: 8px;
+}
+
+
+/* =========================
+   TABLET
+========================= */
+
+@media (max-width: 1000px) {
+
+    .products-grid {
+        grid-template-columns: repeat(3, 1fr);
     }
 
-    .search-section h1 {
-        color: #222;
-        margin-bottom: 25px;
+}
+
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 700px) {
+
+    .products-hero {
+        padding: 55px 20px;
     }
+
+
+    .products-hero h1 {
+        font-size: 36px;
+    }
+
+
+    .products-hero p {
+        font-size: 14px;
+    }
+
+
+    .filter-section {
+        padding: 40px 20px 10px;
+    }
+
 
     .filter-box {
-        display: flex;
-        gap: 20px;
-        justify-content: center;
+        flex-direction: column;
+        width: 100%;
     }
+
 
     .filter-box input,
     .filter-box select {
-        padding: 12px;
-        border: 1px solid #ddd;
-        border-radius: 5px;
-        font-size: 15px;
+        width: 100%;
+        min-width: 0;
     }
+
+
+    .products-section {
+        padding: 35px 15px 60px;
+    }
+
 
     .products-grid {
-        display: flex;
-        justify-content: space-between;
-        flex-wrap: wrap;
-        gap: 20px;
-        padding: 20px;
+        grid-template-columns: repeat(2, 1fr);
+
+        gap: 14px;
     }
 
-    .product-card {
-        width: 220px;
-        background-color: white;
-        border-radius: 10px;
-        padding: 20px;
+
+    .product-image {
+        height: 180px;
+    }
+
+
+    .product-image img {
+        padding: 12px;
+    }
+
+
+    .product-info {
+        padding: 14px;
+    }
+
+
+    .product-info h3 {
+        font-size: 16px;
+    }
+
+
+    .product-bottom {
+        display: block;
+    }
+
+
+    .product-price {
+        display: block;
+
+        margin-bottom: 10px;
+    }
+
+
+    .view-product {
+        display: block;
+
+        width: 100%;
+
         text-align: center;
-        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
     }
 
-    .product-card img {
-        width: 150px;
-        height: 150px;
-        object-fit: contain;
+}
+
+
+/* =========================
+   SMALL MOBILE
+========================= */
+
+@media (max-width: 430px) {
+
+    .products-hero h1 {
+        font-size: 30px;
     }
 
-    .product-card h3 {
-        margin: 10px 0;
-        color: #222;
+
+    .products-grid {
+        grid-template-columns: 1fr;
     }
 
-    .product-card p {
-        color: #555;
-        margin: 7px 0;
+
+    .product-image {
+        height: 220px;
     }
 
-    .product-card .price {
-        color: #e63946;
-        font-weight: bold;
+
+    .product-info h3 {
+        font-size: 18px;
     }
 
-    .product-card button {
-        margin-top: 10px;
-        padding: 10px 20px;
-        background: #e63946;
-        color: #fff;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        transition: .3s;
-    }
-
-    .product-card button:hover {
-        background: #c62839;
-    }
-
-    .product-card a {
-        text-decoration: none;
-    }
-
-    @media (max-width: 992px) {
-
-        .search-section {
-            padding: 30px 20px;
-        }
-
-        .products-grid {
-            justify-content: center;
-            gap: 20px;
-        }
-
-        .product-card {
-            width: 45%;
-        }
-
-    }
-
-    @media (max-width: 768px) {
-
-        .search-section {
-            padding: 25px 15px;
-        }
-
-        .search-section h1 {
-            font-size: 28px;
-        }
-
-        .filter-box {
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .filter-box input,
-        .filter-box select {
-            width: 100%;
-            max-width: 350px;
-            padding: 12px;
-            font-size: 16px;
-        }
-
-        .products-grid {
-            justify-content: center;
-            padding: 15px;
-        }
-
-        .product-card {
-            width: 90%;
-            max-width: 320px;
-        }
-
-        .product-card img {
-            width: 180px;
-            height: 180px;
-        }
-
-        .product-card h3 {
-            font-size: 20px;
-        }
-
-        .product-card button {
-            width: 100%;
-            padding: 12px;
-        }
-
-    }
-
-    @media (max-width: 480px) {
-
-        .search-section h1 {
-            font-size: 24px;
-        }
-
-        .product-card {
-            width: 100%;
-        }
-
-        .product-card img {
-            width: 160px;
-            height: 160px;
-        }
-
-    }
+}
 
 </style>
 
 
-{{-- Search Section --}}
-<section class="search-section">
-
-    <h1>Our Products</h1>
-
-    <div class="filter-box">
-
-        <input
-            type="text"
-            placeholder="Search Products"
-        >
-
-        <select>
-
-            <option>All Categories</option>
-            <option>Earphones</option>
-            <option>Chargers</option>
-            <option>Data Cables</option>
-            <option>Accessories</option>
-
-        </select>
-
-    </div>
-
-</section>
+<div class="products-page">
 
 
-{{-- Products --}}
-{{-- Products --}}
-<section class="products-grid">
+    {{-- =========================
+         HERO
+    ========================= --}}
 
-    @forelse($products as $product)
+    <section class="products-hero">
 
-        <div class="product-card">
+        <span>
+            YASCO TRADERS
+        </span>
 
-            {{-- Product Image --}}
-            @if($product->image)
+        <h1>
+            Our Products
+        </h1>
 
-                <img
-                    src="{{ asset($product->image) }}"
-                    alt="{{ $product->name }}"
-                >
+        <p>
+            Explore our collection of quality mobile accessories
+            at affordable prices.
+        </p>
 
-            @endif
-
-
-            {{-- Product Name --}}
-            <h3>
-                {{ $product->name }}
-            </h3>
+    </section>
 
 
-            {{-- Category --}}
+
+    {{-- =========================
+         FILTER
+    ========================= --}}
+
+    <section class="filter-section">
+
+        <div class="filter-heading">
+
+            <h2>
+                Find Your Product
+            </h2>
+
             <p>
-                {{ $product->category->name ?? 'No Category' }}
+                Search through our product collection.
             </p>
-
-
-            {{-- Price --}}
-            <p class="price">
-
-                {{ $product->currency ?? 'Rs' }}:
-                {{ number_format($product->price, 0) }}
-
-            </p>
-
-
-            {{-- Detail --}}
-            <a href="{{ route('frontend.product-detail', $product->id) }}">
-
-                <button type="button">
-                    View Details
-                </button>
-
-            </a>
 
         </div>
 
-    @empty
 
-        <p>
-            No products found.
-        </p>
+        <div class="filter-box">
 
-    @endforelse
+            <input
+                type="text"
+                placeholder="Search Products"
+            >
 
-</section>
+
+            <select>
+
+                <option>
+                    All Categories
+                </option>
+
+                <option>
+                    Earphones
+                </option>
+
+                <option>
+                    Chargers
+                </option>
+
+                <option>
+                    Data Cables
+                </option>
+
+                <option>
+                    Accessories
+                </option>
+
+            </select>
+
+        </div>
+
+    </section>
+
+
+
+    {{-- =========================
+         PRODUCTS
+    ========================= --}}
+
+    <section class="products-section">
+
+        <div class="products-grid">
+
+
+            @forelse($products as $product)
+
+
+                <div class="product-card">
+
+
+                    {{-- Product Image --}}
+
+                    <div class="product-image">
+
+                        @if($product->image)
+
+                            <img
+                                src="{{ asset($product->image) }}"
+                                alt="{{ $product->name }}"
+                            >
+
+                        @else
+
+                            <div class="no-image">
+                                No Image
+                            </div>
+
+                        @endif
+
+                    </div>
+
+
+
+                    {{-- Product Information --}}
+
+                    <div class="product-info">
+
+
+                        <span class="product-quality">
+                            BEST QUALITY
+                        </span>
+
+
+                        <h3>
+                            {{ $product->name }}
+                        </h3>
+
+
+                        <p class="product-category">
+
+                            {{ $product->category->name ?? 'No Category' }}
+
+                        </p>
+
+
+
+                        <div class="product-bottom">
+
+
+                            <span class="product-price">
+
+                                {{ $product->currency ?? 'Rs' }}.
+                                {{ number_format($product->price, 0) }}
+
+                            </span>
+
+
+                            <a
+                                href="{{ route('frontend.product-detail', $product->id) }}"
+                                class="view-product"
+                            >
+                                View Details
+                            </a>
+
+
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+
+
+            @empty
+
+
+                <div class="no-products">
+
+                    <h3>
+                        No Products Found
+                    </h3>
+
+                    <p>
+                        There are currently no products available.
+                    </p>
+
+                </div>
+
+
+            @endforelse
+
+
+        </div>
+
+    </section>
+
+
+</div>
 
 @endsection
