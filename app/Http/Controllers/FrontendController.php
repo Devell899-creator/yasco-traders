@@ -357,13 +357,17 @@ class FrontendController extends Controller
 
     public function placeOrder(Request $request)
     {
+        $isGuest = !Auth::check();
+
         $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|email|max:255',
+            'email' => $isGuest
+                ? 'required|email|max:255|unique:users,email'
+                : 'required|email|max:255',
             'phone' => 'required|string|max:30',
-            'password' => Auth::check()
-                ? 'nullable'
-                : 'required|string|min:8|confirmed',
+            'password' => $isGuest
+                ? 'required|string|min:8|confirmed'
+                : 'nullable',
             'address' => 'required|string',
             'city' => 'required|string|max:255',
             'payment_method' => 'required|in:cod',
@@ -372,79 +376,108 @@ class FrontendController extends Controller
         $cart = session()->get('cart', []);
 
         if (empty($cart)) {
-            return redirect()->route('frontend.cart');
+            return redirect()
+                ->route('frontend.cart')
+                ->with('error', 'Your cart is empty.');
         }
 
-        $total = $this->cartTotal($cart);
+        try {
+            $result = DB::transaction(function () use (
+                $validated,
+                $cart,
+                $isGuest
+            ) {
+                $products = [];
+                $total = 0.0;
 
-        $order = DB::transaction(function () use (
-            $validated,
-            $cart,
-            $total
-        ) {
-            // Recheck stock while creating the order.
-            foreach ($cart as $item) {
-                $product = Product::whereKey($item['id'])
-                    ->lockForUpdate()
-                    ->first();
+                // Lock products and verify stock and prices from the database.
+                foreach ($cart as $item) {
+                    $productId = (int) ($item['id'] ?? 0);
+                    $quantity = (int) ($item['quantity'] ?? 0);
 
-                if (
-                    !$product ||
-                    (int) $product->stock < (int) $item['quantity']
-                ) {
-                    throw new \RuntimeException(
-                        'A product is no longer available in the requested quantity.'
-                    );
+                    if ($productId <= 0 || $quantity <= 0) {
+                        throw new \RuntimeException(
+                            'The cart contains an invalid product quantity.'
+                        );
+                    }
+
+                    $product = Product::whereKey($productId)
+                        ->lockForUpdate()
+                        ->first();
+
+                    if (!$product || (int) $product->stock < $quantity) {
+                        throw new \RuntimeException(
+                            'A product is out of stock or the requested quantity is unavailable.'
+                        );
+                    }
+
+                    $products[$productId] = $product;
+                    $total += (float) $product->price * $quantity;
                 }
-            }
 
-            $order = Order::create([
-                'customer_name' => $validated['name'],
-                'customer_email' => $validated['email'],
-                'customer_phone' => $validated['phone'],
-                'address' => $validated['address']
-                    . "\nCity: " . $validated['city'],
-                'total_amount' => $total,
-                'status' => 'Pending',
-            ]);
-
-            foreach ($cart as $item) {
-                OrderItem::create([
-                    'order_id' => $order->id,
-                    'product_id' => $item['id'],
-                    'product_name' => $item['name'],
-                    'price' => $item['price'],
-                    'quantity' => $item['quantity'],
-                    'subtotal' => $item['price'] * $item['quantity'],
+                $order = Order::create([
+                    'customer_name' => $validated['name'],
+                    'customer_email' => $validated['email'],
+                    'customer_phone' => $validated['phone'],
+                    'address' => $validated['address'] . "\nCity: " . $validated['city'],
+                    'total_amount' => round($total, 2),
+                    'status' => 'Pending',
                 ]);
-            }
 
-            return $order;
-        });
+                foreach ($cart as $item) {
+                    $productId = (int) $item['id'];
+                    $quantity = (int) $item['quantity'];
+                    $product = $products[$productId];
+                    $price = (float) $product->price;
 
-        /*
-        |--------------------------------------------------------------------------
-        | Guest Customer Account
-        |--------------------------------------------------------------------------
-        */
+                    OrderItem::create([
+                        'order_id' => $order->id,
+                        'product_id' => $product->id,
+                        'product_name' => $product->name,
+                        'price' => $price,
+                        'quantity' => $quantity,
+                        'subtotal' => round($price * $quantity, 2),
+                    ]);
 
-        if (!Auth::check()) {
-            $user = \App\Models\User::create([
-                'name' => $validated['name'],
-                'email' => $validated['email'],
-                'phone' => $validated['phone'],
-                'password' => $validated['password'],
-                'role' => 'customer',
-            ]);
+                    // Decrease stock in the same transaction as the order.
+                    $product->decrement('stock', $quantity);
+                }
 
-            Auth::login($user);
+                // Create the guest customer in the same transaction.
+                $user = null;
 
+                if ($isGuest) {
+                    $user = \App\Models\User::create([
+                        'name' => $validated['name'],
+                        'email' => $validated['email'],
+                        'phone' => $validated['phone'],
+                        'password' => $validated['password'],
+                        'role' => 'customer',
+                    ]);
+                }
+
+                return [
+                    'order' => $order,
+                    'user' => $user,
+                ];
+            });
+        } catch (\RuntimeException $e) {
+            return redirect()
+                ->route('frontend.cart')
+                ->with('error', $e->getMessage());
+        }
+
+        if ($result['user']) {
+            Auth::login($result['user']);
             $request->session()->regenerate();
         }
 
         session()->forget('cart');
 
-        return redirect()->route('frontend.order.success', $order->id);
+        return redirect()->route(
+            'frontend.order.success',
+            $result['order']->id
+        );
     }
 
     public function orderSuccess(Order $order)
