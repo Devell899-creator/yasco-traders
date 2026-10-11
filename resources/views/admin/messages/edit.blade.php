@@ -4,137 +4,505 @@
 
 @section('content')
 
-    <h1 style="margin-bottom: 25px;">
-        Edit Message
-    </h1>
+    <div class="message-form-page">
 
-    <div style="
-        background: white;
-        padding: 25px;
-        border-radius: 8px;
-        max-width: 800px;
-    ">
-
-        <form action="{{ route('admin.messages.update', $message->id) }}" method="POST">
-
-            @csrf
-            @method('PUT')
-
-            <div style="margin-bottom: 20px;">
-                <label>Name</label>
-
-                <input
-                    type="text"
-                    name="name"
-                    value="{{ old('name', $message->name) }}"
-                    required
-                    style="width: 100%; padding: 10px; margin-top: 7px;"
-                >
-
-                @error('name')
-                    <p style="color: red;">{{ $message }}</p>
-                @enderror
+        {{-- Page Header --}}
+        <div class="page-header">
+            <div>
+                <span class="eyebrow">STORE MANAGEMENT</span>
+                <h1>Edit Message</h1>
+                <p>Update customer contact details and message status.</p>
             </div>
 
-            <div style="margin-bottom: 20px;">
-                <label>Email</label>
+            <a href="{{ route('admin.messages.index') }}" class="back-btn">
+                <span>&larr;</span> Back to Messages
+            </a>
+        </div>
 
-                <input
-                    type="email"
-                    name="email"
-                    value="{{ old('email', $message->email) }}"
-                    required
-                    style="width: 100%; padding: 10px; margin-top: 7px;"
-                >
+        {{-- Validation Errors --}}
+        @if($errors->any())
+            <div class="error-summary">
+                <strong>Please correct the following errors:</strong>
+                <ul>
+                    @foreach($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
 
-                @error('email')
-                    <p style="color: red;">{{ $message }}</p>
-                @enderror
+        {{-- Message Form --}}
+        <div class="form-card">
+
+            <div class="form-card-header">
+                <div class="header-icon">✉</div>
+                <div>
+                    <h2>Message Information</h2>
+                    <p>Editing message #{{ $message->id }}</p>
+                </div>
+
+                <div class="current-status {{ $message->is_read ? 'is-read' : 'is-unread' }}">
+                    <span></span>
+                    {{ $message->is_read ? 'Read' : 'Unread' }}
+                </div>
             </div>
 
-            <div style="margin-bottom: 20px;">
-                <label>Phone</label>
+            <form action="{{ route('admin.messages.update', $message->id) }}" method="POST">
+                @csrf
+                @method('PUT')
 
-                <input
-                    type="text"
-                    name="phone"
-                    value="{{ old('phone', $message->phone) }}"
-                    style="width: 100%; padding: 10px; margin-top: 7px;"
-                >
-            </div>
+                <div class="form-body">
 
-            <div style="margin-bottom: 20px;">
-                <label>Subject</label>
+                    {{-- Name --}}
+                    <div class="form-group">
+                        <label for="name">Customer Name <span>*</span></label>
 
-                <input
-                    type="text"
-                    name="subject"
-                    value="{{ old('subject', $message->subject) }}"
-                    style="width: 100%; padding: 10px; margin-top: 7px;"
-                >
-            </div>
+                        <input type="text" name="name" id="name" value="{{ old('name', $message->name) }}"
+                            class="form-control {{ $errors->has('name') ? 'is-invalid' : '' }}"
+                            placeholder="Enter customer name" required>
 
-            <div style="margin-bottom: 20px;">
-                <label>Message</label>
+                        @if($errors->has('name'))
+                            <small class="field-error">{{ $errors->first('name') }}</small>
+                        @endif
+                    </div>
 
-                <textarea
-                    name="message"
-                    rows="6"
-                    required
-                    style="width: 100%; padding: 10px; margin-top: 7px;"
-                >{{ old('message', $message->message) }}</textarea>
-            </div>
+                    {{-- Email --}}
+                    <div class="form-group">
+                        <label for="email">Email Address <span>*</span></label>
 
-            <div style="margin-bottom: 25px;">
-                <label>Status</label>
+                        <input type="email" name="email" id="email" value="{{ old('email', $message->email) }}"
+                            class="form-control {{ $errors->has('email') ? 'is-invalid' : '' }}"
+                            placeholder="customer@example.com" required>
 
-                <select
-                    name="is_read"
-                    required
-                    style="width: 100%; padding: 10px; margin-top: 7px;"
-                >
-                    <option value="0"
-                        {{ old('is_read', $message->is_read) == '0' ? 'selected' : '' }}>
-                        Unread
-                    </option>
+                        @if($errors->has('email'))
+                            <small class="field-error">{{ $errors->first('email') }}</small>
+                        @endif
+                    </div>
 
-                    <option value="1"
-                        {{ old('is_read', $message->is_read) == '1' ? 'selected' : '' }}>
-                        Read
-                    </option>
-                </select>
-            </div>
+                    {{-- Phone --}}
+                    <div class="form-group">
+                        <label for="phone">Phone Number</label>
 
-            <div style="display: flex; gap: 10px;">
+                        <input type="text" name="phone" id="phone" value="{{ old('phone', $message->phone) }}"
+                            class="form-control {{ $errors->has('phone') ? 'is-invalid' : '' }}"
+                            placeholder="Enter phone number">
 
-                <button
-                    type="submit"
-                    style="
-                        background: #007bff;
-                        color: white;
-                        border: none;
-                        padding: 10px 18px;
-                        border-radius: 6px;
-                        cursor: pointer;
-                    ">
-                    Update Message
-                </button>
+                        @if($errors->has('phone'))
+                            <small class="field-error">{{ $errors->first('phone') }}</small>
+                        @endif
+                    </div>
 
-                <a href="{{ route('admin.messages.index') }}"
-                   style="
-                       background: #6c757d;
-                       color: white;
-                       padding: 10px 18px;
-                       border-radius: 6px;
-                       text-decoration: none;
-                   ">
-                    Cancel
-                </a>
+                    {{-- Subject --}}
+                    <div class="form-group">
+                        <label for="subject">Subject</label>
 
-            </div>
+                        <input type="text" name="subject" id="subject" value="{{ old('subject', $message->subject) }}"
+                            class="form-control {{ $errors->has('subject') ? 'is-invalid' : '' }}"
+                            placeholder="Enter message subject">
 
-        </form>
+                        @if($errors->has('subject'))
+                            <small class="field-error">{{ $errors->first('subject') }}</small>
+                        @endif
+                    </div>
+
+                    {{-- Message Content --}}
+                    <div class="form-group full-width">
+                        <label for="message">Message Content <span>*</span></label>
+
+                        <textarea name="message" id="message" rows="6"
+                            class="form-control {{ $errors->has('message') ? 'is-invalid' : '' }}"
+                            placeholder="Write the customer message here..."
+                            required>{{ old('message', $message->message) }}</textarea>
+
+                        @if($errors->has('message'))
+                            <small class="field-error">{{ $errors->first('message') }}</small>
+                        @endif
+                    </div>
+
+                    {{-- Read Status --}}
+                    <div class="form-group full-width">
+                        <label for="is_read">Message Status <span>*</span></label>
+
+                        <select name="is_read" id="is_read"
+                            class="form-control {{ $errors->has('is_read') ? 'is-invalid' : '' }}" required>
+                            <option value="0" {{ (string) old('is_read', $message->is_read) === '0' ? 'selected' : '' }}>
+                                Unread
+                            </option>
+
+                            <option value="1" {{ (string) old('is_read', $message->is_read) === '1' ? 'selected' : '' }}>
+                                Read
+                            </option>
+                        </select>
+
+                        @if($errors->has('is_read'))
+                            <small class="field-error">{{ $errors->first('is_read') }}</small>
+                        @endif
+
+                        <small class="field-help">
+                            Choose whether this message has already been read.
+                        </small>
+                    </div>
+
+                </div>
+
+                {{-- Buttons --}}
+                <div class="form-footer">
+                    <a href="{{ route('admin.messages.index') }}" class="cancel-btn">
+                        Cancel
+                    </a>
+
+                    <button type="submit" class="save-btn">
+                        <span>✓</span> Update Message
+                    </button>
+                </div>
+
+            </form>
+        </div>
 
     </div>
+
+    <style>
+        .message-form-page {
+            color: #e5eaf5;
+            padding-bottom: 30px;
+        }
+
+        .message-form-page * {
+            box-sizing: border-box;
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 28px;
+        }
+
+        .eyebrow {
+            display: inline-block;
+            color: #7da7ff;
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 2px;
+            margin-bottom: 8px;
+        }
+
+        .page-header h1 {
+            color: #f4f7ff;
+            font-size: 30px;
+            font-weight: 800;
+            margin: 0 0 7px;
+        }
+
+        .page-header p {
+            color: #8d9bb5;
+            font-size: 13px;
+            margin: 0;
+        }
+
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 10px 15px;
+            border: 1px solid #2b3b57;
+            border-radius: 8px;
+            background: #152239;
+            color: #c5d4ed !important;
+            text-decoration: none !important;
+            font-size: 12px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .back-btn:hover {
+            background: #1d304e;
+            border-color: #5276b5;
+        }
+
+        .back-btn span {
+            font-size: 17px;
+        }
+
+        .form-card {
+            max-width: 900px;
+            background: #111c31;
+            border: 1px solid #263650;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, .08);
+        }
+
+        .form-card-header {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 23px 26px;
+            border-bottom: 1px solid #263650;
+        }
+
+        .header-icon {
+            width: 45px;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            border-radius: 12px;
+            background: rgba(59, 130, 246, .14);
+            color: #8eb4ff;
+            font-size: 22px;
+        }
+
+        .form-card-header h2 {
+            color: #f0f4fc;
+            font-size: 16px;
+            font-weight: 750;
+            margin: 0 0 6px;
+        }
+
+        .form-card-header p {
+            color: #8d9bb5;
+            font-size: 12px;
+            margin: 0;
+        }
+
+        .current-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            padding: 7px 10px;
+            margin-left: auto;
+            border-radius: 7px;
+            font-size: 10px;
+            font-weight: 800;
+            white-space: nowrap;
+        }
+
+        .current-status>span {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+        }
+
+        .is-read {
+            color: #6ee7a0;
+            background: rgba(34, 197, 94, .11);
+        }
+
+        .is-read>span {
+            background: #4ade80;
+        }
+
+        .is-unread {
+            color: #fca5a5;
+            background: rgba(239, 68, 68, .11);
+        }
+
+        .is-unread>span {
+            background: #f87171;
+        }
+
+        .form-body {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 23px 20px;
+            padding: 26px;
+        }
+
+        .form-group {
+            min-width: 0;
+        }
+
+        .full-width {
+            grid-column: 1 / -1;
+        }
+
+        .form-group label {
+            display: block;
+            color: #dce5f5;
+            font-size: 12px;
+            font-weight: 700;
+            margin-bottom: 9px;
+        }
+
+        .form-group label span {
+            color: #f87171;
+        }
+
+        .form-control {
+            display: block;
+            width: 100%;
+            min-height: 43px;
+            padding: 11px 13px;
+            background: #0c1628;
+            border: 1px solid #2c3c58;
+            border-radius: 8px;
+            outline: none;
+            color: #e7edf8;
+            font-family: inherit;
+            font-size: 12px;
+            transition: border-color .2s ease, box-shadow .2s ease;
+        }
+
+        .form-control::placeholder {
+            color: #64748b;
+        }
+
+        .form-control:focus {
+            border-color: #5288fa;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, .12);
+        }
+
+        .form-control option {
+            background: #111c31;
+            color: #e7edf8;
+        }
+
+        textarea.form-control {
+            min-height: 145px;
+            resize: vertical;
+            line-height: 1.7;
+        }
+
+        .is-invalid {
+            border-color: #f87171;
+        }
+
+        .field-error {
+            display: block;
+            color: #fca5a5;
+            font-size: 11px;
+            margin-top: 7px;
+        }
+
+        .field-help {
+            display: block;
+            color: #7f90aa;
+            font-size: 11px;
+            margin-top: 8px;
+            line-height: 1.6;
+        }
+
+        .error-summary {
+            max-width: 900px;
+            margin-bottom: 20px;
+            padding: 15px 18px;
+            background: rgba(239, 68, 68, .1);
+            border: 1px solid rgba(239, 68, 68, .25);
+            border-radius: 10px;
+            color: #fca5a5;
+            font-size: 12px;
+        }
+
+        .error-summary strong {
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .error-summary ul {
+            padding-left: 20px;
+            margin: 0;
+            line-height: 1.8;
+        }
+
+        .form-footer {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 10px;
+            padding: 19px 26px;
+            background: #142037;
+            border-top: 1px solid #263650;
+        }
+
+        .cancel-btn,
+        .save-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            min-height: 41px;
+            padding: 10px 17px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 750;
+            text-decoration: none !important;
+            cursor: pointer;
+            transition: .2s ease;
+        }
+
+        .cancel-btn {
+            color: #c0cce0 !important;
+            background: #1a2942;
+            border: 1px solid #34445f;
+        }
+
+        .cancel-btn:hover {
+            background: #243653;
+        }
+
+        .save-btn {
+            color: #fff;
+            background: linear-gradient(135deg, #3978f6, #6654e8);
+            border: none;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, .2);
+        }
+
+        .save-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 16px rgba(59, 130, 246, .3);
+        }
+
+        .save-btn span {
+            font-size: 15px;
+        }
+
+        @media (max-width: 650px) {
+            .page-header {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .page-header h1 {
+                font-size: 25px;
+            }
+
+            .back-btn {
+                width: 100%;
+            }
+
+            .form-card-header {
+                padding: 19px;
+                flex-wrap: wrap;
+            }
+
+            .current-status {
+                margin-left: 0;
+            }
+
+            .form-body {
+                grid-template-columns: 1fr;
+                padding: 20px;
+                gap: 20px;
+            }
+
+            .full-width {
+                grid-column: auto;
+            }
+
+            .form-footer {
+                padding: 16px 20px;
+                flex-wrap: wrap;
+            }
+
+            .cancel-btn,
+            .save-btn {
+                flex: 1;
+            }
+        }
+    </style>
 
 @endsection

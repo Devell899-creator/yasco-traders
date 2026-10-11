@@ -4,421 +4,1112 @@
 
 @section('content')
 
-    {{-- Page Header --}}
-    <div class="page-header">
+    <div class="products-page">
 
-        <h1>Products</h1>
+        {{-- =========================
+        PAGE HEADER
+        ========================== --}}
 
-        <a href="{{ route('admin.products.create') }}" class="add-btn">
-            Add Product
-        </a>
+        <div class="products-header">
 
-    </div>
+            <div>
+                <div class="page-label">
+                    STORE MANAGEMENT
+                </div>
 
+                <h1>Products</h1>
 
-    {{-- Success Message --}}
-    @if(session('success'))
+                <p>
+                    Manage your store products, stock and pricing.
+                </p>
+            </div>
 
-        <div class="success-message">
-            {{ session('success') }}
+            <a href="{{ route('admin.products.create') }}" class="add-product-btn">
+                <span>+</span>
+                Add Product
+            </a>
+
         </div>
 
-    @endif
+
+        {{-- =========================
+        SUCCESS MESSAGE
+        ========================== --}}
+
+        @if(session('success'))
+
+            <div class="success-message">
+
+                <div class="success-icon">
+                    ✓
+                </div>
+
+                <span>
+                    {{ session('success') }}
+                </span>
+
+            </div>
+
+        @endif
 
 
-    {{-- Products Table --}}
-    <div class="table-card">
+        {{-- =========================
+        PRODUCT TABLE
+        ========================== --}}
 
-        <div class="table-wrapper">
+        <div class="products-card">
 
-            <table>
+            <div class="table-top">
 
-                <thead>
+                <div>
+                    <span class="table-label">
+                        INVENTORY
+                    </span>
 
-                    <tr>
-                        <th>ID</th>
-                        <th>Name</th>
-                        <th>SKU</th>
-                        <th>Category</th>
-                        <th>Price</th>
-                        <th>Stock</th>
-                        <th>Image</th>
-                        <th>Actions</th>
-                    </tr>
+                    <h2>
+                        All Products
+                    </h2>
+                </div>
 
-                </thead>
+                <div class="product-count">
+                    {{ $products->total() }} Products
+                </div>
+
+            </div>
 
 
-                <tbody>
+            <div class="table-wrapper">
 
-                    @forelse($products as $product)
+                <table>
+
+                    <thead>
 
                         <tr>
 
-                            <td>
-                                {{ $product->id }}
-                            </td>
+                            <th>ID</th>
 
-                            <td>
-                                <strong>{{ $product->name }}</strong>
-                            </td>
+                            <th>PRODUCT</th>
 
-                            <td>
-                                {{ $product->sku }}
-                            </td>
+                            <th>SKU</th>
 
-                            <td>
-                                {{ $product->category->name ?? 'No Category' }}
-                            </td>
+                            <th>CATEGORY</th>
 
-                            <td>
-                                {{ $product->currency }}
-                                {{ $product->price }}
-                            </td>
+                            <th>PRICE</th>
 
-                            <td>
+                            <th>STOCK</th>
 
-                                @if($product->stock > 0)
+                            <th>IMAGE</th>
 
-                                    <span class="stock-available">
-                                        {{ $product->stock }}
+                            <th>ACTIONS</th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                        @forelse($products as $product)
+
+                            <tr>
+
+                                {{-- ID --}}
+
+                                <td>
+
+                                    <span class="product-id">
+                                        #{{ $product->id }}
                                     </span>
 
-                                @else
-
-                                    <span class="stock-out">
-                                        Out of Stock
-                                    </span>
-
-                                @endif
-
-                            </td>
+                                </td>
 
 
-                            {{-- Image --}}
-                            <td>
+                                {{-- Product --}}
 
-                                @if($product->image)
+                                <td>
 
-                                    <div class="product-image">
+                                    <div class="product-name">
 
-                                        <img src="{{ asset($product->image) }}"
-                                             alt="{{ $product->name }}">
+                                        <strong>
+                                            {{ $product->name }}
+                                        </strong>
+
+                                        @if($product->brand)
+
+                                            <small>
+                                                {{ $product->brand }}
+                                            </small>
+
+                                        @endif
 
                                     </div>
 
-                                @else
+                                </td>
 
-                                    <span class="no-image">
-                                        No Image
+
+                                {{-- SKU --}}
+
+                                <td>
+
+                                    <span class="sku">
+                                        {{ $product->sku }}
                                     </span>
 
-                                @endif
-
-                            </td>
+                                </td>
 
 
-                            {{-- Actions --}}
-                            <td>
+                                {{-- Category --}}
 
-                                <div class="action-buttons">
+                                <td>
 
-                                    <a href="{{ route('admin.products.show', $product->id) }}"
-                                       class="btn-view">
-                                        View
-                                    </a>
+                                    <span class="category-badge">
+                                        {{ $product->category->name ?? 'No Category' }}
+                                    </span>
 
-                                    <a href="{{ route('admin.products.edit', $product->id) }}"
-                                       class="btn-edit">
-                                        Edit
-                                    </a>
+                                </td>
 
-                                    <form action="{{ route('admin.products.destroy', $product->id) }}"
-                                          method="POST">
 
-                                        @csrf
-                                        @method('DELETE')
+                                {{-- Price --}}
 
-                                        <button type="submit"
-                                                class="btn-delete"
+                                <td>
+
+                                    <strong class="price">
+
+                                        {{ $product->currency }}
+                                        {{ number_format($product->price, 2) }}
+
+                                    </strong>
+
+                                </td>
+
+
+                                {{-- Stock --}}
+
+                                <td>
+
+                                    @if($product->stock > 0)
+
+                                        <div class="stock-wrapper">
+
+                                            <span class="stock-dot available"></span>
+
+                                            <span class="stock-available">
+                                                {{ $product->stock }} in stock
+                                            </span>
+
+                                        </div>
+
+                                    @else
+
+                                        <div class="stock-wrapper">
+
+                                            <span class="stock-dot out"></span>
+
+                                            <span class="stock-out">
+                                                Out of Stock
+                                            </span>
+
+                                        </div>
+
+                                    @endif
+
+                                </td>
+
+
+                                {{-- Image --}}
+
+                                <td>
+
+                                    @if($product->image)
+
+                                        <div class="product-image">
+
+                                            <img src="{{ asset($product->image) }}" alt="{{ $product->name }}">
+
+                                        </div>
+
+                                    @else
+
+                                        <div class="no-image">
+                                            N/A
+                                        </div>
+
+                                    @endif
+
+                                </td>
+
+
+                                {{-- Actions --}}
+
+                                <td>
+
+                                    <div class="action-buttons">
+
+                                        {{-- View --}}
+
+                                        <a href="{{ route('admin.products.show', $product->id) }}" class="action-btn view-btn">
+                                            View
+                                        </a>
+
+
+                                        {{-- Edit --}}
+
+                                        <a href="{{ route('admin.products.edit', $product->id) }}" class="action-btn edit-btn">
+                                            Edit
+                                        </a>
+
+
+                                        {{-- Delete --}}
+
+                                        <form action="{{ route('admin.products.destroy', $product->id) }}" method="POST">
+
+                                            @csrf
+
+                                            @method('DELETE')
+
+                                            <button type="submit" class="action-btn delete-btn"
                                                 onclick="return confirm('Are you sure you want to delete this product?')">
-                                            Delete
-                                        </button>
+                                                Delete
+                                            </button>
 
-                                    </form>
+                                        </form>
 
-                                </div>
+                                    </div>
 
-                            </td>
+                                </td>
 
-                        </tr>
+                            </tr>
 
-                    @empty
 
-                        <tr>
+                        @empty
 
-                            <td colspan="8" class="empty-row">
-                                No products found.
-                            </td>
+                            <tr>
 
-                        </tr>
+                                <td colspan="8" class="empty-row">
 
-                    @endforelse
+                                    <div class="empty-icon">
+                                        P
+                                    </div>
 
-                </tbody>
+                                    <strong>
+                                        No Products Found
+                                    </strong>
 
-            </table>
+                                    <span>
+                                        Start by adding your first product.
+                                    </span>
+
+                                </td>
+
+                            </tr>
+
+                        @endforelse
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+
+            {{-- Pagination --}}
+
+            @if($products->hasPages())
+
+                <div class="pagination-wrapper">
+
+                    {{ $products->links() }}
+
+                </div>
+
+            @endif
 
         </div>
 
-    </div>
-
-
-    {{-- Pagination --}}
-    <div class="pagination">
-        {{ $products->links() }}
     </div>
 
 
     <style>
+        /* ========================================
+               PRODUCTS PAGE
+            ======================================== */
 
-        /* Page Header */
+        .products-page {
+            width: 100%;
+        }
 
-        .page-header {
+
+        /* ========================================
+               HEADER
+            ======================================== */
+
+        .products-header {
             display: flex;
+
             justify-content: space-between;
+
             align-items: center;
+
+            gap: 20px;
+
             margin-bottom: 25px;
-        }
 
-        .page-header h1 {
-            margin: 0;
-        }
+            padding: 24px 28px;
 
+            background:
+                linear-gradient(135deg,
+                    #111827,
+                    #1e3a8a);
 
-        /* Add Button */
+            border-radius: 14px;
 
-        .add-btn {
-            background: #007bff;
             color: white;
-            padding: 10px 16px;
-            border-radius: 6px;
+
+            box-shadow:
+                0 8px 25px rgba(15, 23, 42, 0.14);
+        }
+
+
+        .page-label {
+            display: inline-block;
+
+            padding: 5px 9px;
+
+            margin-bottom: 8px;
+
+            border-radius: 5px;
+
+            background: rgba(255, 255, 255, 0.12);
+
+            color: #bfdbfe;
+
+            font-size: 9px;
+
+            font-weight: 700;
+
+            letter-spacing: 1.4px;
+        }
+
+
+        .products-header h1 {
+            margin: 0 0 5px;
+
+            color: white;
+
+            font-size: 28px;
+
+            font-weight: 700;
+        }
+
+
+        .products-header p {
+            margin: 0;
+
+            color: #cbd5e1;
+
+            font-size: 12px;
+        }
+
+
+        /* ========================================
+               ADD PRODUCT BUTTON
+            ======================================== */
+
+        .add-product-btn {
+            display: flex;
+
+            align-items: center;
+
+            gap: 8px;
+
+            padding: 12px 18px;
+
+            background: white;
+
+            color: #1e3a8a;
+
+            border-radius: 8px;
+
             text-decoration: none;
-            font-size: 14px;
-            font-weight: 500;
-            transition: 0.2s ease;
+
+            font-size: 13px;
+
+            font-weight: 700;
+
+            white-space: nowrap;
+
+            transition: 0.3s ease;
         }
 
-        .add-btn:hover {
-            background: #0056b3;
+
+        .add-product-btn span {
+            font-size: 20px;
+
+            line-height: 1;
         }
 
 
-        /* Success Message */
+        .add-product-btn:hover {
+            background: #eff6ff;
+
+            color: #1d4ed8;
+
+            transform: translateY(-2px);
+        }
+
+
+        /* ========================================
+               SUCCESS MESSAGE
+            ======================================== */
 
         .success-message {
-            background: #d4edda;
-            color: #155724;
-            padding: 12px 15px;
-            margin-bottom: 20px;
-            border-radius: 6px;
-        }
-
-
-        /* Table Card */
-
-        .table-card {
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-            overflow: hidden;
-        }
-
-
-        /* Table Wrapper */
-
-        .table-wrapper {
-            width: 100%;
-            overflow-x: auto;
-        }
-
-
-        /* Table */
-
-        .table-wrapper table {
-            width: 100%;
-            border-collapse: collapse;
-            min-width: 900px;
-        }
-
-        .table-wrapper th {
-            background: #343a40;
-            color: white;
-            padding: 13px 12px;
-            text-align: left;
-            font-size: 14px;
-        }
-
-        .table-wrapper td {
-            padding: 12px;
-            border-bottom: 1px solid #eee;
-            vertical-align: middle;
-            font-size: 14px;
-        }
-
-        .table-wrapper tbody tr:hover {
-            background: #f8f9fa;
-        }
-
-
-        /* Product Image */
-
-        .product-image {
-            width: 70px;
-            height: 70px;
-
             display: flex;
-            justify-content: center;
+
             align-items: center;
 
-            border: 1px solid #eee;
-            border-radius: 6px;
-            background: #fff;
-        }
+            gap: 10px;
 
-        .product-image img {
-            max-width: 60px;
-            max-height: 60px;
-            object-fit: contain;
-        }
+            margin-bottom: 20px;
 
-        .no-image {
-            color: #888;
+            padding: 12px 15px;
+
+            background: #ecfdf5;
+
+            border: 1px solid #bbf7d0;
+
+            border-radius: 8px;
+
+            color: #166534;
+
             font-size: 13px;
         }
 
 
-        /* Stock */
+        .success-icon {
+            width: 25px;
+
+            height: 25px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            border-radius: 50%;
+
+            background: #16a34a;
+
+            color: white;
+
+            font-size: 13px;
+
+            font-weight: 700;
+        }
+
+
+        /* ========================================
+               TABLE CARD
+            ======================================== */
+
+        .products-card {
+            background: white;
+
+            border: 1px solid #e2e8f0;
+
+            border-radius: 12px;
+
+            overflow: hidden;
+
+            box-shadow:
+                0 3px 12px rgba(15, 23, 42, 0.05);
+        }
+
+
+        /* ========================================
+               TABLE TOP
+            ======================================== */
+
+        .table-top {
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            padding: 20px 22px;
+
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+
+        .table-label {
+            display: block;
+
+            margin-bottom: 4px;
+
+            color: #64748b;
+
+            font-size: 9px;
+
+            font-weight: 700;
+
+            letter-spacing: 1.5px;
+        }
+
+
+        .table-top h2 {
+            margin: 0;
+
+            color: #0f172a;
+
+            font-size: 18px;
+
+            font-weight: 700;
+        }
+
+
+        .product-count {
+            padding: 6px 10px;
+
+            border-radius: 6px;
+
+            background: #eff6ff;
+
+            color: #2563eb;
+
+            font-size: 11px;
+
+            font-weight: 700;
+        }
+
+
+        /* ========================================
+               TABLE WRAPPER
+            ======================================== */
+
+        .table-wrapper {
+            width: 100%;
+
+            overflow-x: auto;
+        }
+
+
+        /* ========================================
+               TABLE
+            ======================================== */
+
+        .table-wrapper table {
+            width: 100%;
+
+            min-width: 1050px;
+
+            border-collapse: collapse;
+        }
+
+
+        .table-wrapper th {
+            padding: 13px 15px;
+
+            background: #f8fafc;
+
+            border-bottom: 1px solid #e2e8f0;
+
+            color: #64748b;
+
+            text-align: left;
+
+            font-size: 9px;
+
+            font-weight: 700;
+
+            letter-spacing: 0.8px;
+
+            white-space: nowrap;
+        }
+
+
+        .table-wrapper td {
+            padding: 14px 15px;
+
+            border-bottom: 1px solid #f1f5f9;
+
+            vertical-align: middle;
+
+            color: #475569;
+
+            font-size: 12px;
+        }
+
+
+        .table-wrapper tbody tr {
+            transition: 0.2s ease;
+        }
+
+
+        .table-wrapper tbody tr:hover {
+            background: #f8fafc;
+        }
+
+
+        .table-wrapper tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+
+        /* ========================================
+               PRODUCT ID
+            ======================================== */
+
+        .product-id {
+            color: #64748b;
+
+            font-size: 11px;
+
+            font-weight: 600;
+        }
+
+
+        /* ========================================
+               PRODUCT NAME
+            ======================================== */
+
+        .product-name strong {
+            display: block;
+
+            color: #0f172a;
+
+            font-size: 13px;
+
+            margin-bottom: 3px;
+        }
+
+
+        .product-name small {
+            color: #94a3b8;
+
+            font-size: 10px;
+        }
+
+
+        /* ========================================
+               SKU
+            ======================================== */
+
+        .sku {
+            color: #64748b;
+
+            font-family: monospace;
+
+            font-size: 11px;
+        }
+
+
+        /* ========================================
+               CATEGORY
+            ======================================== */
+
+        .category-badge {
+            display: inline-block;
+
+            padding: 5px 8px;
+
+            border-radius: 5px;
+
+            background: #f1f5f9;
+
+            color: #475569;
+
+            font-size: 10px;
+
+            font-weight: 600;
+        }
+
+
+        /* ========================================
+               PRICE
+            ======================================== */
+
+        .price {
+            color: #0f172a;
+
+            font-size: 12px;
+
+            white-space: nowrap;
+        }
+
+
+        /* ========================================
+               STOCK
+            ======================================== */
+
+        .stock-wrapper {
+            display: flex;
+
+            align-items: center;
+
+            gap: 7px;
+
+            white-space: nowrap;
+        }
+
+
+        .stock-dot {
+            width: 7px;
+
+            height: 7px;
+
+            border-radius: 50%;
+
+            flex-shrink: 0;
+        }
+
+
+        .stock-dot.available {
+            background: #22c55e;
+
+            box-shadow:
+                0 0 0 3px #dcfce7;
+        }
+
+
+        .stock-dot.out {
+            background: #ef4444;
+
+            box-shadow:
+                0 0 0 3px #fee2e2;
+        }
+
 
         .stock-available {
-            background: #d4edda;
-            color: #155724;
-            padding: 5px 9px;
-            border-radius: 20px;
-            font-size: 12px;
+            color: #15803d;
+
+            font-size: 11px;
+
             font-weight: 600;
         }
+
 
         .stock-out {
-            background: #f8d7da;
-            color: #721c24;
-            padding: 5px 9px;
-            border-radius: 20px;
-            font-size: 12px;
+            color: #dc2626;
+
+            font-size: 11px;
+
             font-weight: 600;
         }
 
 
-        /* Action Buttons */
+        /* ========================================
+               PRODUCT IMAGE
+            ======================================== */
+
+        .product-image {
+            width: 55px;
+
+            height: 55px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            overflow: hidden;
+
+            background: #f8fafc;
+
+            border: 1px solid #e2e8f0;
+
+            border-radius: 8px;
+        }
+
+
+        .product-image img {
+            width: 100%;
+
+            height: 100%;
+
+            object-fit: contain;
+
+            padding: 5px;
+        }
+
+
+        .no-image {
+            width: 55px;
+
+            height: 55px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            background: #f8fafc;
+
+            border: 1px solid #e2e8f0;
+
+            border-radius: 8px;
+
+            color: #94a3b8;
+
+            font-size: 10px;
+        }
+
+
+        /* ========================================
+               ACTIONS
+            ======================================== */
 
         .action-buttons {
             display: flex;
-            gap: 7px;
+
             align-items: center;
+
+            gap: 5px;
+
+            white-space: nowrap;
         }
+
 
         .action-buttons form {
             margin: 0;
         }
 
-        .action-buttons a,
-        .action-buttons button {
+
+        .action-btn {
+            display: inline-flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            padding: 7px 9px;
+
             border: none;
-            padding: 7px 11px;
+
             border-radius: 5px;
-            font-size: 12px;
-            font-weight: 600;
+
             text-decoration: none;
+
+            font-size: 10px;
+
+            font-weight: 700;
+
             cursor: pointer;
+
             transition: 0.2s ease;
         }
 
 
         /* View */
 
-        .btn-view {
-            background: #e8f3ff;
-            color: #1677d2;
+        .view-btn {
+            background: #eff6ff;
+
+            color: #2563eb;
         }
 
-        .btn-view:hover {
-            background: #1677d2;
+
+        .view-btn:hover {
+            background: #2563eb;
+
             color: white;
         }
 
 
         /* Edit */
 
-        .btn-edit {
-            background: #fff4df;
-            color: #d98b00;
+        .edit-btn {
+            background: #fffbeb;
+
+            color: #d97706;
         }
 
-        .btn-edit:hover {
-            background: #d98b00;
+
+        .edit-btn:hover {
+            background: #d97706;
+
             color: white;
         }
 
 
         /* Delete */
 
-        .btn-delete {
-            background: #ffe8e8;
-            color: #dc3545;
+        .delete-btn {
+            background: #fef2f2;
+
+            color: #dc2626;
         }
 
-        .btn-delete:hover {
-            background: #dc3545;
+
+        .delete-btn:hover {
+            background: #dc2626;
+
             color: white;
         }
 
 
-        /* Empty */
+        /* ========================================
+               EMPTY
+            ======================================== */
 
         .empty-row {
             text-align: center;
-            padding: 30px !important;
-            color: #777;
+
+            padding: 60px 20px !important;
         }
 
 
-        /* Pagination */
+        .empty-icon {
+            width: 45px;
 
-        .pagination {
-            margin-top: 20px;
+            height: 45px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            margin: 0 auto 10px;
+
+            border-radius: 10px;
+
+            background: #eff6ff;
+
+            color: #2563eb;
+
+            font-size: 13px;
+
+            font-weight: 700;
         }
 
 
-        /* Mobile */
+        .empty-row strong {
+            display: block;
+
+            color: #334155;
+
+            font-size: 14px;
+
+            margin-bottom: 4px;
+        }
+
+
+        .empty-row span {
+            color: #94a3b8;
+
+            font-size: 11px;
+        }
+
+
+        /* ========================================
+               PAGINATION
+            ======================================== */
+
+        .pagination-wrapper {
+            padding: 18px 22px;
+
+            border-top: 1px solid #e2e8f0;
+        }
+
+
+        /* ========================================
+               RESPONSIVE
+            ======================================== */
 
         @media (max-width: 768px) {
 
-            .page-header {
+            .products-header {
                 flex-direction: column;
+
                 align-items: flex-start;
-                gap: 15px;
+
+                padding: 20px;
+
+                gap: 18px;
             }
 
-            .table-card {
-                border-radius: 6px;
+
+            .products-header h1 {
+                font-size: 24px;
             }
 
-            .action-buttons {
-                flex-wrap: wrap;
+
+            .products-header p {
+                font-size: 11px;
+            }
+
+
+            .add-product-btn {
+                width: 100%;
+
+                justify-content: center;
+            }
+
+
+            .table-top {
+                padding: 17px;
+            }
+
+
+            .products-card {
+                border-radius: 9px;
+            }
+
+
+            .table-wrapper {
+                overflow-x: auto;
+
+                -webkit-overflow-scrolling: touch;
+            }
+
+
+            .table-wrapper table {
+                min-width: 1050px;
+            }
+
+
+            .pagination-wrapper {
+                padding: 15px;
             }
 
         }
 
+
+        @media (max-width: 480px) {
+
+            .products-header {
+                padding: 18px;
+
+                border-radius: 10px;
+            }
+
+
+            .products-header h1 {
+                font-size: 22px;
+            }
+
+
+            .table-top {
+                padding: 15px;
+            }
+
+
+            .table-top h2 {
+                font-size: 16px;
+            }
+
+
+            .product-count {
+                font-size: 9px;
+
+                padding: 5px 7px;
+            }
+
+        }
     </style>
 
 @endsection

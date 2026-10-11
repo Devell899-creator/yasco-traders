@@ -4,202 +4,407 @@
 
 @section('content')
 
-    {{-- Page Header --}}
-    <div class="page-header">
+    <div class="categories-page">
 
-        <h1>Categories</h1>
+        {{-- Page Header --}}
+        <div class="page-header">
 
-        <a href="{{ route('admin.categories.create') }}" class="add-btn">
-            Add Category
-        </a>
+            <div>
+                <span class="page-label">STORE MANAGEMENT</span>
 
-    </div>
+                <h1>Categories</h1>
 
+                <p>
+                    Manage your store categories and organize products.
+                </p>
+            </div>
 
-    {{-- Success Message --}}
-    @if(session('success'))
-        <div class="success-message">
-            {{ session('success') }}
+            <a href="{{ route('admin.categories.create') }}" class="add-btn">
+                + Add Category
+            </a>
+
         </div>
-    @endif
 
 
-    {{-- Categories Table --}}
-    <div class="table-card">
+        {{-- Success Message --}}
+        @if(session('success'))
 
-        <div class="table-wrapper">
+            <div class="success-message">
+                <span class="success-icon">✓</span>
+                {{ session('success') }}
+            </div>
 
-            <table>
+        @endif
 
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Image</th>
-                        <th>Name</th>
-                        <th>Description</th>
-                        <th>Status</th>
-                        <th>Sort Order</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
 
-                <tbody>
+        {{-- Categories Card --}}
+        <div class="table-card">
 
-                    @forelse($categories as $category)
+            {{-- Card Header --}}
+            <div class="table-card-header">
+
+                <div>
+                    <h2>Category List</h2>
+                    <p>All categories available in your store.</p>
+                </div>
+
+                <div class="category-count">
+                    {{ $categories->total() }} Categories
+                </div>
+
+            </div>
+
+
+            {{-- Table --}}
+            <div class="table-wrapper">
+
+                <table>
+
+                    <thead>
 
                         <tr>
+                            <th>ID</th>
+                            <th>CATEGORY</th>
+                            <th>DESCRIPTION</th>
+                            <th>STATUS</th>
+                            <th>SORT ORDER</th>
+                            <th>ACTIONS</th>
+                        </tr>
 
-                            <td>
-                                {{ $category->id }}
-                            </td>
+                    </thead>
 
-                            <td>
 
-                                @if($category->image)
+                    <tbody>
 
-                                    <div class="category-image">
-                                        <img src="{{ asset($category->image) }}" alt="{{ $category->name }}">
+                        @forelse($categories as $category)
+
+                            <tr>
+
+                                {{-- ID --}}
+                                <td>
+                                    <span class="category-id">
+                                        #{{ $category->id }}
+                                    </span>
+                                </td>
+
+
+                                {{-- Category --}}
+                                <td>
+
+                                    <div class="category-info">
+
+                                        <div class="category-image">
+
+                                            @if($category->image)
+
+                                                <img src="{{ asset($category->image) }}" alt="{{ $category->name }}">
+
+                                            @else
+
+                                                <span class="image-placeholder">
+                                                    C
+                                                </span>
+
+                                            @endif
+
+                                        </div>
+
+                                        <div>
+
+                                            <strong>
+                                                {{ $category->name }}
+                                            </strong>
+
+                                            <small>
+                                                Category
+                                            </small>
+
+                                        </div>
+
                                     </div>
 
-                                @else
+                                </td>
 
-                                    <span class="no-image">
-                                        No Image
+
+                                {{-- Description --}}
+                                <td>
+
+                                    <div class="description-cell">
+
+                                        @if($category->description)
+
+                                            {{ \Illuminate\Support\Str::limit($category->description, 60) }}
+
+                                        @else
+
+                                            <span class="not-available">
+                                                No description
+                                            </span>
+
+                                        @endif
+
+                                    </div>
+
+                                </td>
+
+
+                                {{-- Status --}}
+                                <td>
+
+                                    @if($category->status)
+
+                                        <span class="status active">
+                                            <span></span>
+                                            Active
+                                        </span>
+
+                                    @else
+
+                                        <span class="status inactive">
+                                            <span></span>
+                                            Inactive
+                                        </span>
+
+                                    @endif
+
+                                </td>
+
+
+                                {{-- Sort Order --}}
+                                <td>
+
+                                    <span class="sort-order">
+                                        {{ $category->sort_order }}
                                     </span>
 
-                                @endif
+                                </td>
 
-                            </td>
 
-                            <td>
-                                <strong>{{ $category->name }}</strong>
-                            </td>
+                                {{-- Actions --}}
+                                <td>
 
-                            <td>
-                                {{ $category->description ?? 'N/A' }}
-                            </td>
+                                    <div class="action-buttons">
 
-                            <td>
+                                        {{-- View --}}
+                                        <a href="{{ route('admin.categories.show', $category->id) }}" class="btn-view">
+                                            View
+                                        </a>
 
-                                @if($category->status)
 
-                                    <span class="status-active">
-                                        Active
-                                    </span>
+                                        {{-- Edit --}}
+                                        <a href="{{ route('admin.categories.edit', $category->id) }}" class="btn-edit">
+                                            Edit
+                                        </a>
 
-                                @else
 
-                                    <span class="status-inactive">
-                                        Inactive
-                                    </span>
+                                        {{-- Delete --}}
+                                        <form action="{{ route('admin.categories.destroy', $category->id) }}" method="POST">
 
-                                @endif
+                                            @csrf
+                                            @method('DELETE')
 
-                            </td>
+                                            <button type="submit" class="btn-delete"
+                                                onclick="return confirm('Are you sure you want to delete this category?')">
+                                                Delete
+                                            </button>
 
-                            <td>
-                                {{ $category->sort_order }}
-                            </td>
+                                        </form>
 
-                            <td>
-                                <div class="action-buttons">
+                                    </div>
 
-                                    {{-- View --}}
-                                    <a href="{{ route('admin.categories.show', $category->id) }}" class="btn-view">
-                                        View
-                                    </a>
+                                </td>
 
-                                    {{-- Edit --}}
-                                    <a href="{{ route('admin.categories.edit', $category->id) }}" class="btn-edit">
-                                        Edit
-                                    </a>
+                            </tr>
 
-                                    {{-- Delete --}}
-                                    <form action="{{ route('admin.categories.destroy', $category->id) }}" method="POST">
 
-                                        @csrf
-                                        @method('DELETE')
+                        @empty
 
-                                        <button type="submit" class="btn-delete"
-                                            onclick="return confirm('Are you sure you want to delete this category?')">
-                                            Delete
-                                        </button>
+                            <tr>
 
-                                    </form>
+                                <td colspan="6" class="empty-row">
 
-                                </div>
+                                    <div class="empty-state">
 
-                            </td>
+                                        <div class="empty-icon">
+                                            C
+                                        </div>
 
-                        </tr>
+                                        <h3>No Categories Found</h3>
 
-                    @empty
+                                        <p>
+                                            You haven't added any categories yet.
+                                        </p>
 
-                        <tr>
+                                        <a href="{{ route('admin.categories.create') }}" class="empty-add-btn">
+                                            + Add Category
+                                        </a>
 
-                            <td colspan="7" class="empty-row">
-                                No categories found.
-                            </td>
+                                    </div>
 
-                        </tr>
+                                </td>
 
-                    @endforelse
+                            </tr>
 
-                </tbody>
+                        @endforelse
 
-            </table>
+                    </tbody>
+
+                </table>
+
+            </div>
 
         </div>
 
-    </div>
+
+        {{-- Pagination --}}
+        @if($categories->hasPages())
+
+            <div class="pagination-wrapper">
+                {{ $categories->links() }}
+            </div>
+
+        @endif
 
 
-    {{-- Pagination --}}
-    <div class="pagination">
-        {{ $categories->links() }}
     </div>
 
 
     <style>
+        .categories-page {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+
+        /* Page Header */
+
         .page-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            gap: 20px;
             margin-bottom: 25px;
+        }
+
+        .page-label {
+            display: inline-block;
+            color: #2563eb;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            margin-bottom: 6px;
         }
 
         .page-header h1 {
             margin: 0;
+            color: #0f172a;
+            font-size: 30px;
+            font-weight: 700;
         }
 
-        .add-btn {
-            background: #007bff;
-            color: white;
-            padding: 10px 16px;
-            border-radius: 6px;
-            text-decoration: none;
+        .page-header p {
+            margin: 7px 0 0;
+            color: #64748b;
             font-size: 14px;
-            font-weight: 500;
+        }
+
+
+        /* Add Button */
+
+        .add-btn {
+            background: #2563eb;
+            color: white;
+            padding: 11px 17px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 600;
+            transition: 0.2s;
+            white-space: nowrap;
         }
 
         .add-btn:hover {
-            background: #0056b3;
+            background: #1d4ed8;
+            color: white;
         }
+
+
+        /* Success */
 
         .success-message {
-            background: #d4edda;
-            color: #155724;
-            padding: 12px 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            color: #166534;
+            padding: 13px 16px;
             margin-bottom: 20px;
-            border-radius: 6px;
+            border-radius: 9px;
+            font-size: 13px;
+            font-weight: 500;
         }
 
+        .success-icon {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: #22c55e;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+
+        /* Table Card */
+
         .table-card {
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 14px;
+            box-shadow: 0 5px 20px rgba(15, 23, 42, 0.06);
             overflow: hidden;
         }
+
+
+        /* Card Header */
+
+        .table-card-header {
+            padding: 21px 23px;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .table-card-header h2 {
+            margin: 0;
+            color: #0f172a;
+            font-size: 17px;
+        }
+
+        .table-card-header p {
+            margin: 5px 0 0;
+            color: #94a3b8;
+            font-size: 12px;
+        }
+
+        .category-count {
+            background: #eff6ff;
+            color: #2563eb;
+            padding: 7px 11px;
+            border-radius: 7px;
+            font-size: 12px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+
+        /* Table */
 
         .table-wrapper {
             width: 100%;
@@ -209,88 +414,324 @@
         .table-wrapper table {
             width: 100%;
             border-collapse: collapse;
-            min-width: 900px;
+            min-width: 950px;
         }
 
         .table-wrapper th {
-            background: #343a40;
-            color: white;
-            padding: 13px 12px;
+            background: #f8fafc;
+            color: #64748b;
+            padding: 13px 16px;
             text-align: left;
-            font-size: 14px;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.6px;
+            border-bottom: 1px solid #e2e8f0;
         }
 
         .table-wrapper td {
-            padding: 12px;
-            border-bottom: 1px solid #eee;
+            padding: 14px 16px;
+            border-bottom: 1px solid #f1f5f9;
             vertical-align: middle;
-            font-size: 14px;
-        }
-
-        .table-wrapper tbody tr:hover {
-            background: #f8f9fa;
-        }
-
-        .category-image {
-            width: 60px;
-            height: 60px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            border: 1px solid #eee;
-            border-radius: 6px;
-            background: white;
-        }
-
-        .category-image img {
-            max-width: 50px;
-            max-height: 50px;
-            object-fit: contain;
-        }
-
-        .no-image {
-            color: #888;
+            color: #475569;
             font-size: 13px;
         }
 
-        .status-active {
-            background: #d4edda;
-            color: #155724;
-            padding: 5px 9px;
-            border-radius: 20px;
+        .table-wrapper tbody tr {
+            transition: 0.15s;
+        }
+
+        .table-wrapper tbody tr:hover {
+            background: #f8fafc;
+        }
+
+        .table-wrapper tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+
+        /* Category ID */
+
+        .category-id {
+            color: #64748b;
             font-size: 12px;
             font-weight: 600;
         }
 
-        .status-inactive {
-            background: #f8d7da;
-            color: #721c24;
+
+        /* Category Info */
+
+        .category-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            min-width: 180px;
+        }
+
+        .category-image {
+            width: 52px;
+            height: 52px;
+            flex-shrink: 0;
+            border: 1px solid #e2e8f0;
+            border-radius: 9px;
+            background: #f8fafc;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .category-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .image-placeholder {
+            width: 30px;
+            height: 30px;
+            border-radius: 7px;
+            background: #dbeafe;
+            color: #2563eb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .category-info strong {
+            display: block;
+            color: #1e293b;
+            font-size: 13px;
+            margin-bottom: 4px;
+        }
+
+        .category-info small {
+            color: #94a3b8;
+            font-size: 11px;
+        }
+
+
+        /* Description */
+
+        .description-cell {
+            max-width: 270px;
+            color: #64748b;
+            line-height: 1.5;
+        }
+
+        .not-available {
+            color: #94a3b8;
+            font-style: italic;
+        }
+
+
+        /* Status */
+
+        .status {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
             padding: 5px 9px;
             border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .status span {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        .status.active {
+            background: #dcfce7;
+            color: #15803d;
+        }
+
+        .status.active span {
+            background: #22c55e;
+        }
+
+        .status.inactive {
+            background: #fee2e2;
+            color: #b91c1c;
+        }
+
+        .status.inactive span {
+            background: #ef4444;
+        }
+
+
+        /* Sort Order */
+
+        .sort-order {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 30px;
+            height: 28px;
+            padding: 0 7px;
+            background: #f1f5f9;
+            color: #475569;
+            border-radius: 6px;
             font-size: 12px;
-            font-weight: 600;
+            font-weight: 700;
+        }
+
+
+        /* Actions */
+
+        .action-buttons {
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
 
         .action-buttons form {
             margin: 0;
         }
 
-        .empty-row {
-            text-align: center;
-            padding: 30px !important;
-            color: #777;
+        .btn-view,
+        .btn-edit,
+        .btn-delete {
+            display: inline-block;
+            padding: 7px 10px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 600;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            transition: 0.2s;
+            white-space: nowrap;
         }
 
-        .pagination {
+        .btn-view {
+            background: #eff6ff;
+            color: #2563eb;
+        }
+
+        .btn-view:hover {
+            background: #dbeafe;
+            color: #1d4ed8;
+        }
+
+        .btn-edit {
+            background: #f1f5f9;
+            color: #475569;
+        }
+
+        .btn-edit:hover {
+            background: #e2e8f0;
+            color: #1e293b;
+        }
+
+        .btn-delete {
+            background: #fef2f2;
+            color: #dc2626;
+        }
+
+        .btn-delete:hover {
+            background: #fee2e2;
+        }
+
+
+        /* Empty State */
+
+        .empty-row {
+            padding: 0 !important;
+        }
+
+        .empty-state {
+            padding: 55px 20px;
+            text-align: center;
+        }
+
+        .empty-icon {
+            width: 52px;
+            height: 52px;
+            margin: 0 auto 14px;
+            background: #eff6ff;
+            color: #2563eb;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            font-weight: 800;
+        }
+
+        .empty-state h3 {
+            margin: 0 0 7px;
+            color: #334155;
+            font-size: 16px;
+        }
+
+        .empty-state p {
+            margin: 0 0 17px;
+            color: #94a3b8;
+            font-size: 13px;
+        }
+
+        .empty-add-btn {
+            display: inline-block;
+            background: #2563eb;
+            color: white;
+            padding: 9px 14px;
+            border-radius: 7px;
+            text-decoration: none;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .empty-add-btn:hover {
+            background: #1d4ed8;
+            color: white;
+        }
+
+
+        /* Pagination */
+
+        .pagination-wrapper {
             margin-top: 20px;
         }
 
+
+        /* Mobile */
+
         @media (max-width: 768px) {
+
+            .categories-page {
+                width: 100%;
+            }
 
             .page-header {
                 flex-direction: column;
                 align-items: flex-start;
                 gap: 15px;
+            }
+
+            .page-header h1 {
+                font-size: 25px;
+            }
+
+            .add-btn {
+                width: 100%;
+                text-align: center;
+                box-sizing: border-box;
+            }
+
+            .table-card-header {
+                align-items: flex-start;
+                flex-direction: column;
+                padding: 18px;
+            }
+
+            .table-wrapper th,
+            .table-wrapper td {
+                padding: 12px;
             }
 
             .action-buttons {

@@ -4,191 +4,626 @@
 
 @section('content')
 
-    <div style="
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 25px;
-    ">
+    <div class="customers-page">
 
-        <h1 style="font-size: 32px; font-weight: 700;">
-            Customers
-        </h1>
+        {{-- Page Header --}}
+        <div class="page-header">
 
-        <a href="{{ route('admin.customers.create') }}"
-           style="
-                background: #007bff;
-                color: white;
-                padding: 10px 16px;
-                border-radius: 6px;
-                text-decoration: none;
-           ">
-            Add Customer
-        </a>
+            <div>
+                <span class="page-label">STORE MANAGEMENT</span>
+                <h1>Customers</h1>
+                <p>Manage your customer information and accounts.</p>
+            </div>
+
+            <a href="{{ route('admin.customers.create') }}" class="add-btn">
+                <span class="plus-icon">+</span>
+                Add Customer
+            </a>
+
+        </div>
+
+
+        {{-- Success Message --}}
+        @if(session('success'))
+            <div class="success-message">
+                <span class="success-icon">✓</span>
+                {{ session('success') }}
+            </div>
+        @endif
+
+
+        {{-- Customer Table Card --}}
+        <div class="customers-card">
+
+            <div class="card-header">
+
+                <div>
+                    <h2>Customer Directory</h2>
+                    <p>View and manage your registered customers.</p>
+                </div>
+
+                <div class="customer-count">
+                    {{ $customers->total() }} Customers
+                </div>
+
+            </div>
+
+
+            <div class="table-wrapper">
+
+                <table class="customers-table">
+
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>CUSTOMER</th>
+                            <th>CONTACT</th>
+                            <th>ADDRESS</th>
+                            <th>STATUS</th>
+                            <th>ACTIONS</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        @forelse($customers as $customer)
+
+                            <tr>
+
+                                {{-- ID --}}
+                                <td>
+                                    <span class="customer-id">
+                                        #{{ $customer->id }}
+                                    </span>
+                                </td>
+
+
+                                {{-- Customer --}}
+                                <td>
+                                    <div class="customer-info">
+
+                                        <div class="customer-avatar">
+                                            {{ strtoupper(substr($customer->name ?? 'C', 0, 1)) }}
+                                        </div>
+
+                                        <div class="customer-details">
+                                            <strong>{{ $customer->name }}</strong>
+                                            <span>{{ $customer->email ?? 'No email provided' }}</span>
+                                        </div>
+
+                                    </div>
+                                </td>
+
+
+                                {{-- Contact --}}
+                                <td>
+                                    <div class="contact-info">
+                                        <span class="contact-label">Phone</span>
+                                        <span class="contact-value">
+                                            {{ $customer->phone ?? 'Not provided' }}
+                                        </span>
+                                    </div>
+                                </td>
+
+
+                                {{-- Address --}}
+                                <td>
+                                    <span class="address-text">
+                                        {{ $customer->address ?: 'Not provided' }}
+                                    </span>
+                                </td>
+
+
+                                {{-- Status --}}
+                                <td>
+                                    @if($customer->status)
+                                        <span class="status-badge status-active">
+                                            <span class="status-dot"></span>
+                                            Active
+                                        </span>
+                                    @else
+                                        <span class="status-badge status-inactive">
+                                            <span class="status-dot"></span>
+                                            Inactive
+                                        </span>
+                                    @endif
+                                </td>
+
+
+                                {{-- Actions --}}
+                                <td>
+                                    <div class="action-buttons">
+
+                                        <a href="{{ route('admin.customers.show', $customer->id) }}"
+                                            class="action-btn view-btn">
+                                            View
+                                        </a>
+
+                                        <a href="{{ route('admin.customers.edit', $customer->id) }}"
+                                            class="action-btn edit-btn">
+                                            Edit
+                                        </a>
+
+                                        <form action="{{ route('admin.customers.destroy', $customer->id) }}" method="POST"
+                                            onsubmit="return confirm('Are you sure you want to delete this customer?')">
+                                            @csrf
+                                            @method('DELETE')
+
+                                            <button type="submit" class="action-btn delete-btn">
+                                                Delete
+                                            </button>
+                                        </form>
+
+                                    </div>
+                                </td>
+
+                            </tr>
+
+                        @empty
+
+                            <tr>
+                                <td colspan="6">
+                                    <div class="empty-state">
+                                        <div class="empty-icon">U</div>
+                                        <h3>No Customers Found</h3>
+                                        <p>There are no customers to display yet.</p>
+
+                                        <a href="{{ route('admin.customers.create') }}" class="add-btn">
+                                            + Add Customer
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+
+                        @endforelse
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+
+            {{-- Pagination --}}
+            @if($customers->hasPages())
+                <div class="pagination-wrapper">
+                    {{ $customers->links() }}
+                </div>
+            @endif
+
+        </div>
 
     </div>
 
 
-    {{-- Success Message --}}
-    @if(session('success'))
+    <style>
+        .customers-page {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
 
-        <div style="
-            background: #d4edda;
-            color: #155724;
-            padding: 12px;
+        /* Page Header */
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
+        .page-label {
+            display: inline-block;
+            color: #2563eb;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            margin-bottom: 6px;
+        }
+
+        .page-header h1 {
+            margin: 0;
+            color: #0f172a;
+            font-size: 30px;
+            font-weight: 700;
+        }
+
+        .page-header p {
+            margin: 7px 0 0;
+            color: #64748b;
+            font-size: 14px;
+        }
+
+        /* Add Button */
+
+        .add-btn {
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            padding: 11px 17px;
+            background: #2563eb;
+            color: white;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 600;
+            white-space: nowrap;
+            transition: 0.2s;
+        }
+
+        .add-btn:hover {
+            background: #1d4ed8;
+            color: white;
+            transform: translateY(-1px);
+        }
+
+        .plus-icon {
+            font-size: 19px;
+            line-height: 14px;
+        }
+
+        /* Success Message */
+
+        .success-message {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 13px 16px;
             margin-bottom: 20px;
-            border-radius: 6px;
-        ">
-            {{ session('success') }}
-        </div>
+            border: 1px solid #bbf7d0;
+            border-radius: 9px;
+            background: #f0fdf4;
+            color: #166534;
+            font-size: 13px;
+        }
 
-    @endif
+        .success-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 23px;
+            height: 23px;
+            border-radius: 50%;
+            background: #dcfce7;
+            font-weight: 700;
+        }
 
+        /* Card */
 
-    <div style="
-        background: white;
-        padding: 20px;
-        border-radius: 8px;
-        overflow-x: auto;
-    ">
+        .customers-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 14px;
+            box-shadow: 0 5px 20px rgba(15, 23, 42, 0.05);
+            overflow: hidden;
+        }
 
-        <table style="
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            padding: 22px 24px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .card-header h2 {
+            margin: 0;
+            color: #0f172a;
+            font-size: 17px;
+            font-weight: 700;
+        }
+
+        .card-header p {
+            margin: 6px 0 0;
+            color: #64748b;
+            font-size: 12px;
+        }
+
+        .customer-count {
+            padding: 7px 11px;
+            border-radius: 7px;
+            background: #eff6ff;
+            color: #2563eb;
+            font-size: 12px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        /* Table */
+
+        .table-wrapper {
             width: 100%;
+            overflow-x: auto;
+        }
+
+        .customers-table {
+            width: 100%;
+            min-width: 900px;
             border-collapse: collapse;
-        ">
+            text-align: left;
+        }
 
-            <thead>
+        .customers-table thead {
+            background: #f8fafc;
+        }
 
-                <tr style="border-bottom: 1px solid #ddd;">
+        .customers-table th {
+            padding: 15px 18px;
+            border-bottom: 1px solid #e2e8f0;
+            color: #64748b;
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 0.7px;
+            white-space: nowrap;
+        }
 
-                    <th style="padding: 12px; text-align: left;">
-                        ID
-                    </th>
+        .customers-table td {
+            padding: 17px 18px;
+            border-bottom: 1px solid #f1f5f9;
+            color: #475569;
+            font-size: 12px;
+            vertical-align: middle;
+        }
 
-                    <th style="padding: 12px; text-align: left;">
-                        Name
-                    </th>
+        .customers-table tbody tr {
+            transition: background 0.2s;
+        }
 
-                    <th style="padding: 12px; text-align: left;">
-                        Email
-                    </th>
+        .customers-table tbody tr:hover {
+            background: #f8fafc;
+        }
 
-                    <th style="padding: 12px; text-align: left;">
-                        Phone
-                    </th>
+        .customers-table tbody tr:last-child td {
+            border-bottom: none;
+        }
 
-                    <th style="padding: 12px; text-align: left;">
-                        Address
-                    </th>
+        /* Customer Information */
 
-                    <th style="padding: 12px; text-align: left;">
-                        Status
-                    </th>
+        .customer-id {
+            color: #64748b;
+            font-size: 12px;
+            font-weight: 700;
+        }
 
-                    <th style="padding: 12px; text-align: left;">
-                        Actions
-                    </th>
+        .customer-info {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+            min-width: 180px;
+        }
 
-                </tr>
+        .customer-avatar {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            background: #dbeafe;
+            color: #1d4ed8;
+            font-size: 15px;
+            font-weight: 800;
+        }
 
-            </thead>
+        .customer-details {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            min-width: 0;
+        }
 
+        .customer-details strong {
+            color: #0f172a;
+            font-size: 13px;
+            font-weight: 700;
+        }
 
-            <tbody>
+        .customer-details span {
+            color: #94a3b8;
+            font-size: 11px;
+            overflow-wrap: anywhere;
+        }
 
-                @forelse($customers as $customer)
+        /* Contact and Address */
 
-                    <tr style="border-bottom: 1px solid #eee;">
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
 
-                        <td style="padding: 12px;">
-                            {{ $customer->id }}
-                        </td>
+        .contact-label {
+            color: #94a3b8;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+        }
 
-                        <td style="padding: 12px;">
-                            {{ $customer->name }}
-                        </td>
+        .contact-value {
+            color: #334155;
+            font-size: 12px;
+        }
 
-                        <td style="padding: 12px;">
-                            {{ $customer->email ?? '-' }}
-                        </td>
+        .address-text {
+            display: block;
+            max-width: 180px;
+            line-height: 1.6;
+            overflow-wrap: anywhere;
+        }
 
-                        <td style="padding: 12px;">
-                            {{ $customer->phone ?? '-' }}
-                        </td>
+        /* Status */
 
-                        <td style="padding: 12px;">
-                            {{ $customer->address ?? '-' }}
-                        </td>
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 9px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
 
-                        <td style="padding: 12px;">
-                            {{ $customer->status ? 'Active' : 'Inactive' }}
-                        </td>
+        .status-active {
+            background: #dcfce7;
+            color: #15803d;
+        }
 
-                        <td style="padding: 12px;">
+        .status-inactive {
+            background: #fee2e2;
+            color: #b91c1c;
+        }
 
-                            <div class="action-buttons">
+        .status-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: currentColor;
+        }
 
-                                <a href="{{ route('admin.customers.show', $customer->id) }}"
-                                   class="btn-view">
-                                    View
-                                </a>
+        /* Action Buttons */
 
-                                <a href="{{ route('admin.customers.edit', $customer->id) }}"
-                                   class="btn-edit">
-                                    Edit
-                                </a>
+        .action-buttons {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            white-space: nowrap;
+        }
 
-                                <form
-                                    action="{{ route('admin.customers.destroy', $customer->id) }}"
-                                    method="POST"
-                                >
+        .action-buttons form {
+            margin: 0;
+        }
 
-                                    @csrf
-                                    @method('DELETE')
+        .action-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 7px 10px;
+            border: none;
+            border-radius: 6px;
+            font-family: inherit;
+            font-size: 11px;
+            font-weight: 700;
+            text-decoration: none;
+            cursor: pointer;
+            transition: 0.2s;
+        }
 
-                                    <button
-                                        type="submit"
-                                        class="btn-delete"
-                                        onclick="return confirm('Are you sure you want to delete this customer?')"
-                                    >
-                                        Delete
-                                    </button>
+        .view-btn {
+            background: #eff6ff;
+            color: #2563eb;
+        }
 
-                                </form>
+        .view-btn:hover {
+            background: #dbeafe;
+            color: #1d4ed8;
+        }
 
-                            </div>
+        .edit-btn {
+            background: #fef3c7;
+            color: #92400e;
+        }
 
-                        </td>
+        .edit-btn:hover {
+            background: #fde68a;
+            color: #78350f;
+        }
 
-                    </tr>
+        .delete-btn {
+            background: #fee2e2;
+            color: #b91c1c;
+        }
 
-                @empty
+        .delete-btn:hover {
+            background: #fecaca;
+            color: #991b1b;
+        }
 
-                    <tr>
+        /* Empty State */
 
-                        <td
-                            colspan="7"
-                            style="padding: 30px; text-align: center;"
-                        >
-                            No customers found.
-                        </td>
+        .empty-state {
+            padding: 45px 20px;
+            text-align: center;
+        }
 
-                    </tr>
+        .empty-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 55px;
+            height: 55px;
+            margin: 0 auto 14px;
+            border-radius: 14px;
+            background: #eff6ff;
+            color: #2563eb;
+            font-size: 20px;
+            font-weight: 800;
+        }
 
-                @endforelse
+        .empty-state h3 {
+            margin: 0;
+            color: #0f172a;
+            font-size: 16px;
+        }
 
-            </tbody>
+        .empty-state p {
+            margin: 8px 0 18px;
+            color: #64748b;
+            font-size: 13px;
+        }
 
-        </table>
+        /* Pagination */
 
+        .pagination-wrapper {
+            padding: 18px 24px;
+            border-top: 1px solid #e2e8f0;
+            overflow-x: auto;
+        }
 
-        {{-- Pagination --}}
-        <div style="margin-top: 20px;">
+        .pagination-wrapper nav {
+            display: flex;
+            justify-content: flex-end;
+        }
 
-            {{ $customers->links() }}
+        .pagination-wrapper p {
+            margin-bottom: 0;
+        }
 
-        </div>
+        /* Mobile */
 
-    </div>
+        @media (max-width: 768px) {
+
+            .page-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .page-header h1 {
+                font-size: 25px;
+            }
+
+            .page-header .add-btn {
+                width: 100%;
+                box-sizing: border-box;
+            }
+
+            .card-header {
+                padding: 18px;
+                align-items: flex-start;
+            }
+
+            .customer-count {
+                font-size: 10px;
+            }
+
+            .pagination-wrapper {
+                padding: 15px;
+            }
+
+        }
+    </style>
 
 @endsection

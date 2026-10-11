@@ -15,14 +15,12 @@ class ProductController extends Controller
         return view('admin.products.index', compact('products'));
     }
 
-
     public function create()
     {
         $categories = Category::orderBy('name')->get();
 
         return view('admin.products.create', compact('categories'));
     }
-
 
     public function store(Request $request)
     {
@@ -58,20 +56,17 @@ class ProductController extends Controller
             ->with('success', 'Product added successfully.');
     }
 
-
     public function show(Product $product)
     {
         return view('admin.products.show', compact('product'));
     }
 
-
     public function edit(Product $product)
     {
         $categories = Category::orderBy('name')->get();
 
-        return view('admin.products.edit', compact( 'product', 'categories' ));
+        return view('admin.products.edit', compact('product', 'categories'));
     }
-
 
     public function update(Request $request, Product $product)
     {
@@ -84,7 +79,19 @@ class ProductController extends Controller
             'image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
         ]);
 
+        /*
+        |--------------------------------------------------------------------------
+        | Product data
+        |--------------------------------------------------------------------------
+        */
+
         $data = $request->except('image');
+
+        /*
+        |--------------------------------------------------------------------------
+        | Keep old image if no new image is selected
+        |--------------------------------------------------------------------------
+        */
 
         if ($request->hasFile('image')) {
 
@@ -98,6 +105,11 @@ class ProductController extends Controller
             );
 
             $data['image'] = 'Images/products/' . $imageName;
+        } else {
+
+            // Important:
+            // No new image = keep the existing image
+            $data['image'] = $product->image;
         }
 
         $product->update($data);
@@ -106,7 +118,6 @@ class ProductController extends Controller
             ->route('admin.products.index')
             ->with('success', 'Product updated successfully.');
     }
-
 
     public function destroy(Product $product)
     {

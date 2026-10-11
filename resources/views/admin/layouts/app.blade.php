@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
     <title>@yield('title', 'Admin Panel')</title>
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+
     <style>
         * {
             margin: 0;
@@ -17,69 +17,277 @@
 
         body {
             font-family: Arial, Helvetica, sans-serif;
-            background: #f4f6f9;
+            background: #f1f5f9;
+            color: #1e293b;
         }
 
-        /* Navbar */
+        /* =========================
+           NAVBAR
+        ========================= */
+
         .navbar {
-            height: 60px;
-            background: #343a40;
+            height: 65px;
+            background: #0f172a;
             color: white;
+
             display: flex;
             align-items: center;
+
             padding: 0 25px;
+
+            border-bottom: 1px solid #1e293b;
         }
 
         .navbar h2 {
-            font-size: 20px;
+            font-size: 19px;
+            font-weight: 700;
         }
 
-        /* Main Layout */
+
+        /* =========================
+           MAIN LAYOUT
+        ========================= */
+
         .layout {
             display: flex;
-            min-height: calc(100vh - 60px);
+            min-height: calc(100vh - 65px);
         }
 
-        /* Sidebar */
+
+        /* =========================
+           SIDEBAR
+        ========================= */
+
         .sidebar {
-            width: 230px;
-            background: #212529;
-            padding-top: 20px;
+            width: 245px;
+            flex-shrink: 0;
+
+            background: #111827;
+
+            padding: 22px 14px;
+
+            border-right: 1px solid #1e293b;
+
+            min-height: calc(100vh - 65px);
         }
+
+
+        /* Admin Profile */
+
+        .admin-profile {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+
+            padding: 14px 12px;
+            margin-bottom: 25px;
+
+            background: #1e293b;
+            border: 1px solid #334155;
+
+            border-radius: 10px;
+        }
+
+        .admin-avatar {
+            width: 40px;
+            height: 40px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 9px;
+
+            background: linear-gradient(135deg,
+                    #2563eb,
+                    #7c3aed);
+
+            color: white;
+
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .admin-info strong {
+            display: block;
+
+            color: white;
+
+            font-size: 13px;
+
+            margin-bottom: 3px;
+        }
+
+        .admin-info span {
+            color: #94a3b8;
+
+            font-size: 10px;
+        }
+
+
+        /* Sidebar Title */
+
+        .sidebar-title {
+            color: #64748b;
+
+            font-size: 9px;
+            font-weight: 700;
+
+            letter-spacing: 1.5px;
+
+            padding: 0 12px;
+
+            margin-bottom: 8px;
+        }
+
+
+        /* Sidebar Links */
 
         .sidebar a {
-            display: block;
-            color: white;
+            position: relative;
+
+            display: flex;
+            align-items: center;
+
+            gap: 12px;
+
+            color: #cbd5e1;
+
             text-decoration: none;
-            padding: 13px 20px;
+
+            padding: 11px 12px;
+
+            margin-bottom: 4px;
+
+            border-radius: 8px;
+
+            font-size: 13px;
+            font-weight: 500;
+
+            transition: all 0.25s ease;
         }
+
+
+        /* Sidebar Icons */
+
+        .sidebar-icon {
+            width: 32px;
+            height: 32px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            flex-shrink: 0;
+
+            border-radius: 7px;
+
+            background: #1e293b;
+
+            color: #94a3b8;
+
+            font-size: 11px;
+            font-weight: 700;
+
+            transition: all 0.25s ease;
+        }
+
+
+        /* Hover */
 
         .sidebar a:hover {
-            background: #343a40;
+            background: #1e293b;
+
+            color: white;
+
+            transform: translateX(3px);
         }
 
-        /* Content */
+        .sidebar a:hover .sidebar-icon {
+            background: #2563eb;
+
+            color: white;
+        }
+
+
+        /* Active Menu */
+
+        .sidebar a.active {
+            background: linear-gradient(90deg,
+                    #1d4ed8,
+                    #2563eb);
+
+            color: white;
+
+            box-shadow:
+                0 5px 15px rgba(37, 99, 235, 0.25);
+        }
+
+        .sidebar a.active .sidebar-icon {
+            background: rgba(255, 255, 255, 0.18);
+
+            color: white;
+        }
+
+
+        /* Active Left Line */
+
+        .sidebar a.active::before {
+            content: "";
+
+            position: absolute;
+
+            left: -14px;
+
+            top: 8px;
+            bottom: 8px;
+
+            width: 3px;
+
+            border-radius: 0 4px 4px 0;
+
+            background: #60a5fa;
+        }
+
+
+        /* =========================
+           CONTENT
+        ========================= */
+
         .content {
             flex: 1;
+
             padding: 30px;
+
+            min-width: 0;
         }
 
         .content h1 {
             margin-bottom: 25px;
         }
 
-        /* Dashboard Cards */
+
+        /* =========================
+           DASHBOARD CARDS
+        ========================= */
+
         .cards {
             display: grid;
+
             grid-template-columns: repeat(4, 1fr);
+
             gap: 20px;
         }
 
         .card {
             background: white;
+
             padding: 25px;
+
             border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+
+            box-shadow:
+                0 2px 8px rgba(15, 23, 42, 0.08);
         }
 
         .card h3 {
@@ -88,10 +296,15 @@
 
         .card p {
             font-size: 25px;
+
             font-weight: bold;
         }
 
-        /* Pagination */
+
+        /* =========================
+           PAGINATION
+        ========================= */
+
         .content nav {
             margin-top: 20px;
         }
@@ -101,21 +314,33 @@
             height: 20px;
         }
 
-        /* Action Buttons */
+
+        /* =========================
+           ACTION BUTTONS
+        ========================= */
+
         .action-buttons {
             display: flex;
+
             gap: 8px;
+
             align-items: center;
         }
 
         .action-buttons a,
         .action-buttons button {
             border: none;
+
             padding: 7px 12px;
+
             border-radius: 6px;
+
             font-size: 13px;
+
             font-weight: 500;
+
             text-decoration: none;
+
             cursor: pointer;
         }
 
@@ -123,15 +348,113 @@
         .btn-edit,
         .btn-delete {
             color: #444;
+
             background: none;
         }
 
-        /* Mobile */
+
+        /* =========================
+           DIVIDER
+        ========================= */
+
+        .sidebar-divider {
+            height: 1px;
+
+            background: #1e293b;
+
+            margin: 20px 5px;
+        }
+
+
+        /* =========================
+           LOGOUT
+        ========================= */
+
+        .logout-form {
+            margin: 0;
+        }
+
+        .logout-btn {
+            width: 100%;
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+
+            color: #fca5a5;
+
+            background: transparent;
+
+            border: none;
+
+            padding: 11px 12px;
+
+            border-radius: 8px;
+
+            cursor: pointer;
+
+            font-size: 13px;
+
+            font-weight: 500;
+
+            font-family: inherit;
+
+            transition: 0.25s;
+        }
+
+        .logout-btn:hover {
+            background: #3f1d1d;
+
+            color: #fecaca;
+        }
+
+        .logout-icon {
+            width: 32px;
+            height: 32px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 7px;
+
+            background: #3f1d1d;
+
+            color: #f87171;
+
+            font-size: 11px;
+
+            font-weight: 700;
+        }
+
+
+        /* =========================
+           MOBILE
+        ========================= */
+
+        @media (max-width: 900px) {
+
+            .sidebar {
+                width: 210px;
+            }
+
+            .content {
+                padding: 20px;
+            }
+
+        }
+
+
         @media (max-width: 768px) {
 
             .navbar {
                 height: auto;
+
                 min-height: 60px;
+
                 padding: 15px;
             }
 
@@ -145,20 +468,37 @@
 
             .sidebar {
                 width: 100%;
-                padding-top: 0;
+
+                min-height: auto;
+
+                padding: 15px;
+            }
+
+            .admin-profile {
+                margin-bottom: 18px;
+            }
+
+            .sidebar-title {
+                margin-top: 12px;
             }
 
             .sidebar a {
-                padding: 10px 15px;
+                padding: 10px 12px;
+            }
+
+            .sidebar a.active::before {
+                left: -15px;
             }
 
             .content {
                 padding: 15px;
+
                 overflow-x: auto;
             }
 
             .content h1 {
                 font-size: 24px;
+
                 margin-bottom: 20px;
             }
 
@@ -176,51 +516,201 @@
 
             .content nav svg {
                 width: 20px !important;
+
                 height: 20px !important;
             }
+
         }
     </style>
 </head>
 
+
 <body>
 
+
+    <!-- =========================
+         NAVBAR
+    ========================= -->
+
     <div class="navbar">
-        <h2>YASCO TRADERS - Admin Panel</h2>
+
+        <h2>
+            YASCO TRADERS
+            <span style="color:#64748b;"> / </span>
+            Admin Panel
+        </h2>
+
     </div>
+
+
+    <!-- =========================
+         LAYOUT
+    ========================= -->
 
     <div class="layout">
 
+
+        <!-- =========================
+             SIDEBAR
+        ========================= -->
+
         <div class="sidebar">
 
-            <a href="{{ route('admin.dashboard') }}">
-                Dashboard
+
+            <!-- Admin Profile -->
+
+            <div class="admin-profile">
+
+                <div class="admin-avatar">
+                    A
+                </div>
+
+                <div class="admin-info">
+
+                    <strong>Administrator</strong>
+
+                    <span>Store Manager</span>
+
+                </div>
+
+            </div>
+
+
+            <!-- Menu Title -->
+
+            <div class="sidebar-title">
+                MAIN MENU
+            </div>
+
+
+            <!-- Dashboard -->
+
+            <a href="{{ route('admin.dashboard') }}"
+                class="{{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
+
+                <div class="sidebar-icon">
+                    D
+                </div>
+
+                <span>Dashboard</span>
+
             </a>
 
-            <a href="{{ route('admin.products.index') }}">
-                Products
+
+            <!-- Products -->
+
+            <a href="{{ route('admin.products.index') }}"
+                class="{{ request()->routeIs('admin.products.*') ? 'active' : '' }}">
+
+                <div class="sidebar-icon">
+                    P
+                </div>
+
+                <span>Products</span>
+
             </a>
 
-            <a href="{{ route('admin.categories.index') }}">
-                Categories
+
+            <!-- Categories -->
+
+            <a href="{{ route('admin.categories.index') }}"
+                class="{{ request()->routeIs('admin.categories.*') ? 'active' : '' }}">
+
+                <div class="sidebar-icon">
+                    C
+                </div>
+
+                <span>Categories</span>
+
             </a>
 
-            <a href="{{ route('admin.orders.index') }}">
-                Orders
+
+            <!-- Orders -->
+
+            <a href="{{ route('admin.orders.index') }}"
+                class="{{ request()->routeIs('admin.orders.*') ? 'active' : '' }}">
+
+                <div class="sidebar-icon">
+                    O
+                </div>
+
+                <span>Orders</span>
+
             </a>
 
-            <a href="{{ route('admin.customers.index') }}">
-                Customers
+
+            <!-- Customers -->
+
+            <a href="{{ route('admin.customers.index') }}"
+                class="{{ request()->routeIs('admin.customers.*') ? 'active' : '' }}">
+
+                <div class="sidebar-icon">
+                    U
+                </div>
+
+                <span>Customers</span>
+
             </a>
 
-            <a href="{{ route('admin.messages.index') }}">
-                Messages
+
+            <!-- Messages -->
+
+            <a href="{{ route('admin.messages.index') }}"
+                class="{{ request()->routeIs('admin.messages.*') ? 'active' : '' }}">
+
+                <div class="sidebar-icon">
+                    M
+                </div>
+
+                <span>Messages</span>
+
             </a>
 
-            <a href="{{ route('admin.website-content.index') }}">
-                Website-Content
+
+            <!-- Website Content -->
+
+            <a href="{{ route('admin.website-content.index') }}"
+                class="{{ request()->routeIs('admin.website-content.*') ? 'active' : '' }}">
+
+                <div class="sidebar-icon">
+                    W
+                </div>
+
+                <span>Website Content</span>
+
             </a>
+
+
+            <!-- Divider -->
+
+            <div class="sidebar-divider"></div>
+
+
+            <!-- Logout -->
+
+            <form action="{{ route('admin.logout') }}" method="POST" class="logout-form">
+
+                @csrf
+
+                <button type="submit" class="logout-btn">
+
+                    <div class="logout-icon">
+                        X
+                    </div>
+
+                    <span>Logout</span>
+
+                </button>
+
+            </form>
+
 
         </div>
+
+
+        <!-- =========================
+             PAGE CONTENT
+        ========================= -->
 
         <div class="content">
 
@@ -228,7 +718,9 @@
 
         </div>
 
+
     </div>
+
 
 </body>
 
