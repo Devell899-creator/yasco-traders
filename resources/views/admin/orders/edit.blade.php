@@ -361,6 +361,7 @@
                         @enderror
                     </div>
 
+
                     {{-- Status --}}
                     <div class="order-edit-field full-width">
                         <label for="status">
@@ -368,7 +369,7 @@
                         </label>
 
                         <select name="status" id="status" class="order-edit-control @error('status') is-invalid @enderror"
-                            required>
+                            required {{ $order->status === 'Cancelled' ? 'disabled' : '' }}>
                             @foreach (['Pending', 'Processing', 'Shipped', 'Delivered', 'Cancelled'] as $status)
                                 <option value="{{ $status }}" {{ old('status', $order->status) == $status ? 'selected' : '' }}>
                                     {{ $status }}
@@ -376,26 +377,31 @@
                             @endforeach
                         </select>
 
+                        @if ($order->status === 'Cancelled')
+                            <p class="order-edit-error">
+                                This order is cancelled. Its status cannot be changed.
+                            </p>
+                            <input type="hidden" name="status" value="Cancelled">
+                        @endif
+
                         @error('status')
                             <p class="order-edit-error">{{ $message }}</p>
                         @enderror
                     </div>
 
-                </div>
+                    <hr class="order-edit-divider">
 
-                <hr class="order-edit-divider">
+                    <div class="order-edit-actions">
+                        <a href="{{ route('admin.orders.index') }}" class="order-edit-btn order-edit-btn-secondary">
+                            <i class="fas fa-times"></i>
+                            Cancel
+                        </a>
 
-                <div class="order-edit-actions">
-                    <a href="{{ route('admin.orders.index') }}" class="order-edit-btn order-edit-btn-secondary">
-                        <i class="fas fa-times"></i>
-                        Cancel
-                    </a>
-
-                    <button type="submit" class="order-edit-btn order-edit-btn-primary">
-                        <i class="fas fa-save"></i>
-                        Update Order
-                    </button>
-                </div>
+                        <button type="submit" class="order-edit-btn order-edit-btn-primary">
+                            <i class="fas fa-save"></i>
+                            Update Order
+                        </button>
+                    </div>
 
             </form>
         </div>

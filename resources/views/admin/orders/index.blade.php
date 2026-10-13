@@ -357,6 +357,7 @@
                             <th>Address</th>
                             <th>Total</th>
                             <th>Status</th>
+                            <th>Stock Restored At</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -395,6 +396,8 @@
                                         {{ $order->status ?? 'Pending' }}
                                     </span>
                                 </td>
+
+                                <td>{{ $order->stock_restored_at ?? 'Not restored' }}</td>
 
                                 <td>
                                     <div class="order-actions">

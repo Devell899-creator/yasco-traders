@@ -393,6 +393,21 @@
 
                 </div>
 
+                {{-- Stock Restoration Status --}}
+                <div class="order-form-group full-width">
+                    <label class="order-form-label">
+                        Stock Restoration Status
+                    </label>
+
+                    <div class="order-form-control">
+                        Not restored — order has not been cancelled yet.
+                    </div>
+
+                    <p class="order-form-note">
+                        Stock restoration is handled automatically when an order is cancelled.
+                    </p>
+                </div>
+
                 <div class="order-form-actions">
                     <button type="submit" class="order-save-btn">
                         Save Order

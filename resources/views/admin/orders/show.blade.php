@@ -375,6 +375,54 @@
 
                 </div>
 
+
+                <hr class="order-show-divider">
+
+                <h4 class="order-show-section-title">
+                    <i class="fas fa-box" style="margin-right: 7px;"></i>
+                    Order Items
+                </h4>
+
+                @if ($order->items->isNotEmpty())
+                    <div style="overflow-x: auto;">
+                        <table style="width: 100%; border-collapse: collapse; color: #e5e7eb;">
+                            <thead>
+                                <tr style="background: #101b2c; text-align: left;">
+                                    <th style="padding: 13px; border-bottom: 1px solid #2b3a50;">Product</th>
+                                    <th style="padding: 13px; border-bottom: 1px solid #2b3a50;">Price</th>
+                                    <th style="padding: 13px; border-bottom: 1px solid #2b3a50;">Quantity</th>
+                                    <th style="padding: 13px; border-bottom: 1px solid #2b3a50;">Subtotal</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($order->items as $item)
+                                    <tr>
+                                        <td style="padding: 13px; border-bottom: 1px solid #2b3a50;">
+                                            {{ $item->product_name ?: ($item->product->name ?? 'Product unavailable') }}
+                                        </td>
+                                        <td style="padding: 13px; border-bottom: 1px solid #2b3a50;">
+                                            Rs {{ number_format((float) $item->price, 2) }}
+                                        </td>
+                                        <td style="padding: 13px; border-bottom: 1px solid #2b3a50;">
+                                            {{ $item->quantity }}
+                                        </td>
+                                        <td style="padding: 13px; border-bottom: 1px solid #2b3a50;">
+                                            Rs {{ number_format((float) $item->subtotal, 2) }}
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                @else
+                    <div class="order-show-info">
+                        <div class="order-show-value">
+                            No product items are linked to this order.
+                        </div>
+                    </div>
+                @endif
+
+
                 <hr class="order-show-divider">
 
                 <div class="order-show-footer">
